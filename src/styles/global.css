@@ -1,0 +1,71 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink-950: #0b1220;
+  --color-ink-900: #111b2e;
+  --color-ink-700: #33415c;
+  --color-ink-500: #64748b;
+  --color-ink-300: #cbd5e1;
+  --color-ink-100: #eef2f7;
+  --color-ink-50: #f7f9fc;
+
+  --color-brand-700: #2b4fa8;
+  --color-brand-600: #3f6fd8;
+  --color-brand-500: #5b86e5;
+  --color-brand-100: #e5edfd;
+
+  --color-accent-600: #0f9d76;
+  --color-accent-100: #d9f5ec;
+
+  --font-sans: 'Inter var', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-xl2: 1.25rem;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-ink-50);
+  color: var(--color-ink-950);
+  font-feature-settings: 'cv02', 'cv03', 'cv04';
+  text-rendering: optimizeLegibility;
+}
+
+/* Anclas por debajo del header fijo */
+[id] {
+  scroll-margin-top: 6rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Aparición suave al hacer scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

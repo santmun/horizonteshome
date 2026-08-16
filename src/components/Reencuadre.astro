@@ -1,0 +1,52 @@
+---
+const comparacion = [
+  {
+    chatbot: 'Responde preguntas sueltas y se queda esperando.',
+    agente: 'Lleva la conversación: pregunta lo que necesita saber para poder ayudarte.',
+  },
+  {
+    chatbot: 'Contesta con un menú de opciones que nadie quiere leer.',
+    agente: 'Escribe como escribe tu mejor asesor, con el tono de tu inmobiliaria.',
+  },
+  {
+    chatbot: 'Si no entiende, repite "no comprendí tu solicitud".',
+    agente: 'Si no sabe algo, lo dice y te pasa la conversación a ti al instante.',
+  },
+  {
+    chatbot: 'Te deja una bandeja de mensajes que igual tienes que leer completa.',
+    agente: 'Te entrega al cliente con presupuesto, zona y tipo de propiedad ya anotados.',
+  },
+];
+---
+
+<section class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+  <div class="mx-auto max-w-2xl text-center">
+    <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Qué instalamos</p>
+    <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+      Esto no es un chatbot. Es un equipo de venta que trabaja de noche.
+    </h2>
+    <p class="mt-5 text-lg leading-relaxed text-ink-700">
+      La diferencia no es técnica, es de trabajo. Un chatbot responde. Un asesor vende. Lo que
+      instalamos en tu inmobiliaria se parece mucho más a lo segundo.
+    </p>
+  </div>
+
+  <div class="mt-14 overflow-hidden rounded-2xl border border-ink-300/60 bg-white">
+    <div class="grid grid-cols-2 border-b border-ink-100 bg-ink-50">
+      <p class="px-6 py-4 text-sm font-semibold text-ink-500">Un chatbot cualquiera</p>
+      <p class="border-l border-ink-100 px-6 py-4 text-sm font-semibold text-brand-700">
+        Tu equipo de agentes
+      </p>
+    </div>
+    {
+      comparacion.map((c, i) => (
+        <div class:list={['grid grid-cols-2', i > 0 && 'border-t border-ink-100']}>
+          <p class="px-6 py-5 text-sm leading-relaxed text-ink-500">{c.chatbot}</p>
+          <p class="border-l border-ink-100 px-6 py-5 text-sm leading-relaxed text-ink-900">
+            {c.agente}
+          </p>
+        </div>
+      ))
+    }
+  </div>
+</section>

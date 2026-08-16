@@ -1,0 +1,67 @@
+---
+const trabajos = [
+  {
+    n: '01',
+    titulo: 'Recibe a todo el que escribe',
+    texto:
+      'Domingo a las 11 de la noche o martes a media junta. Contesta en segundos, en el canal donde te escribieron, y nunca deja a nadie en visto.',
+  },
+  {
+    n: '02',
+    titulo: 'Entiende qué está buscando',
+    texto:
+      'Comprar o rentar, casa o departamento, la zona, el presupuesto, cuántas recámaras y para cuándo. Lo pregunta como lo preguntaría un asesor: una cosa a la vez, sin interrogatorio.',
+  },
+  {
+    n: '03',
+    titulo: 'Le muestra lo que sí le sirve',
+    texto:
+      'Busca en tu inventario y le presenta dos o tres propiedades que encajan con lo que dijo. Si nada encaja, lo registra y le avisa cuando entre algo nuevo que sí.',
+  },
+  {
+    n: '04',
+    titulo: 'Agenda la visita',
+    texto:
+      'Propone día y hora, toma los datos y deja la visita solicitada para que tu asesor la confirme. Sin ir y venir de mensajes.',
+  },
+  {
+    n: '05',
+    titulo: 'Te entrega el cliente listo',
+    texto:
+      'Cuando el cliente está caliente o pregunta algo que solo tú puedes contestar, te pasa la conversación con todo el contexto anotado. Tú entras a cerrar, no a preguntar lo básico.',
+  },
+  {
+    n: '06',
+    titulo: 'No suelta a los que se enfriaron',
+    texto:
+      'Al que dejó de contestar le escribe de nuevo horas después, en tu tono y sin insistir. Es la parte que en la vida real nadie alcanza a hacer.',
+  },
+];
+---
+
+<section id="que-hace" class="border-y border-ink-100 bg-white">
+  <div class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+    <div class="max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">El trabajo</p>
+      <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+        Seis cosas que hace todos los días sin que nadie se lo recuerde
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-ink-700">
+        No reemplaza a tu equipo. Le quita de encima la parte repetitiva para que tus asesores
+        lleguen a la conversación cuando ya vale la pena tenerla.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        trabajos.map((t) => (
+          <article class="reveal rounded-2xl border border-ink-300/50 bg-ink-50 p-7 transition hover:border-brand-500/50 hover:shadow-lg hover:shadow-brand-600/5">
+            <p class="text-sm font-semibold text-brand-600">{t.n}</p>
+            <h3 class="mt-3 text-lg font-semibold leading-snug">{t.titulo}</h3>
+            <p class="mt-3 text-[15px] leading-relaxed text-ink-700">{t.texto}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

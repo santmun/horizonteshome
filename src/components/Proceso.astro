@@ -1,0 +1,75 @@
+---
+const dias = [
+  {
+    etiqueta: 'Antes de empezar',
+    titulo: 'Aplicas y platicamos 30 minutos',
+    texto:
+      'Llenas la solicitud de abajo (unos 5 minutos). Si encajamos, te llamamos, entendemos cómo vende hoy tu equipo y te decimos con honestidad si esto te sirve o no.',
+    tuyo: 'Tu tiempo: 35 minutos',
+  },
+  {
+    etiqueta: 'Día 1',
+    titulo: 'Nos pasas tu información',
+    texto:
+      'Tu inventario de propiedades como lo tengas hoy (Excel, tu página, tu CRM), tus horarios, tus políticas de comisión y las preguntas que más te hacen. Nosotros lo ordenamos.',
+    tuyo: 'Tu tiempo: 1 hora',
+  },
+  {
+    etiqueta: 'Día 2',
+    titulo: 'Lo construimos y lo entrenamos',
+    texto:
+      'Armamos a tus agentes con tu información, tu tono y tus reglas. Aquí no haces nada: es nuestro trabajo pesado.',
+    tuyo: 'Tu tiempo: cero',
+  },
+  {
+    etiqueta: 'Día 3',
+    titulo: 'Lo pruebas y sale a la calle',
+    texto:
+      'Tú y tus asesores le escriben como si fueran clientes, ajustamos lo que no les guste, conectamos tus canales y empieza a atender de verdad.',
+    tuyo: 'Tu tiempo: 1 hora',
+  },
+];
+---
+
+<section id="proceso" class="border-y border-ink-100 bg-ink-950 text-white">
+  <div class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+    <div class="max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-wider text-brand-500">Cómo lo instalamos</p>
+      <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+        De la primera llamada a estar contestando: menos de tres días
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-ink-300">
+        No es un proyecto de tres meses ni te vamos a pedir que cambies cómo trabajas. Nosotros lo
+        armamos todo; tú pones tu información y das el visto bueno.
+      </p>
+    </div>
+
+    <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        dias.map((d) => (
+          <div class="reveal bg-ink-950 p-7">
+            <p class="text-sm font-semibold text-brand-500">{d.etiqueta}</p>
+            <h3 class="mt-3 text-lg font-semibold leading-snug">{d.titulo}</h3>
+            <p class="mt-3 text-sm leading-relaxed text-ink-300">{d.texto}</p>
+            <p class="mt-5 inline-block rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium">
+              {d.tuyo}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 flex flex-col items-start gap-5 rounded-2xl border border-white/10 p-7 sm:flex-row sm:items-center sm:justify-between">
+      <p class="max-w-xl leading-relaxed text-ink-300">
+        <span class="font-semibold text-white">Después del día 3 no te dejamos solo.</span> Las
+        primeras semanas revisamos las conversaciones reales contigo y lo vamos afinando con lo que
+        de verdad pregunta tu mercado.
+      </p>
+      <a
+        href="#aplicar"
+        class="shrink-0 rounded-xl bg-white px-6 py-3.5 font-medium text-ink-950 transition hover:bg-brand-500 hover:text-white">
+        Aplicar ahora
+      </a>
+    </div>
+  </div>
+</section>

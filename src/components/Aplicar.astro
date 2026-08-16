@@ -1,0 +1,507 @@
+---
+// Definición del wizard. Cada paso agrupa campos; el orden aquí es el orden en pantalla
+// y también el orden del correo que llega a contacto@.
+const pasos = [
+  {
+    id: 'negocio',
+    titulo: 'Tu inmobiliaria',
+    ayuda: 'Lo básico para saber con quién estamos hablando.',
+    campos: [
+      { name: 'inmobiliaria', label: '¿Cómo se llama tu inmobiliaria?', type: 'text', required: true, placeholder: 'Inmobiliaria Herrera' },
+      { name: 'ciudad', label: '¿En qué ciudad y país operan?', type: 'text', required: true, placeholder: 'Monterrey, México' },
+      { name: 'sitio', label: 'Tu página web o tu Instagram', type: 'text', required: false, placeholder: 'inmobiliariaherrera.com o @inmoherrera', nota: 'Si no tienes, déjalo vacío.' },
+      {
+        name: 'antiguedad', label: '¿Cuánto llevan operando?', type: 'radio', required: true,
+        opciones: ['Menos de 1 año', '1 a 3 años', '3 a 10 años', 'Más de 10 años'],
+      },
+    ],
+  },
+  {
+    id: 'operacion',
+    titulo: 'Cómo es tu operación',
+    ayuda: 'Esto define el tamaño del sistema que necesitas.',
+    campos: [
+      {
+        name: 'asesores', label: '¿Cuántos asesores tienen hoy?', type: 'radio', required: true,
+        opciones: ['Solo yo', '2 a 5', '6 a 15', 'Más de 15'],
+      },
+      {
+        name: 'propiedades', label: '¿Cuántas propiedades manejan al mismo tiempo?', type: 'radio', required: true,
+        opciones: ['Menos de 20', '20 a 100', '100 a 500', 'Más de 500'],
+      },
+      {
+        name: 'operacion_tipo', label: '¿A qué se dedican principalmente?', type: 'radio', required: true,
+        opciones: ['Venta', 'Renta', 'Las dos por igual', 'Desarrollo propio'],
+      },
+      {
+        name: 'segmento', label: '¿Qué tipo de propiedades? (marca todas las que apliquen)', type: 'checkbox', required: true,
+        opciones: ['Casas', 'Departamentos', 'Terrenos', 'Locales y oficinas', 'Naves industriales', 'Preventa / desarrollos'],
+      },
+    ],
+  },
+  {
+    id: 'atencion',
+    titulo: 'Cómo atienden hoy',
+    ayuda: 'La parte que más nos dice si te podemos ayudar.',
+    campos: [
+      {
+        name: 'canales', label: '¿Por dónde te escriben tus clientes? (marca todos)', type: 'checkbox', required: true,
+        opciones: ['WhatsApp', 'Instagram', 'Facebook Messenger', 'Llamadas', 'Formulario de mi web', 'Portales (Inmuebles24, Lamudi...)'],
+      },
+      {
+        name: 'volumen', label: '¿Cuántos mensajes nuevos reciben por semana, más o menos?', type: 'radio', required: true,
+        opciones: ['Menos de 10', '10 a 50', '50 a 200', 'Más de 200', 'No tengo idea'],
+      },
+      {
+        name: 'quien_contesta', label: '¿Quién contesta hoy?', type: 'radio', required: true,
+        opciones: ['Yo mismo', 'Cada asesor su celular', 'Una persona dedicada', 'Una agencia externa', 'Casi nadie, es el problema'],
+      },
+      {
+        name: 'tiempo_respuesta', label: '¿En cuánto tiempo contestan normalmente?', type: 'radio', required: true,
+        opciones: ['En minutos', 'En unas horas', 'Al día siguiente', 'Depende del día', 'Se nos van varios sin contestar'],
+      },
+      {
+        name: 'invierte_ads', label: '¿Invierten en publicidad para conseguir clientes?', type: 'radio', required: true,
+        opciones: ['Sí, cada mes', 'A veces', 'No, todo es referido y orgánico'],
+      },
+    ],
+  },
+  {
+    id: 'herramientas',
+    titulo: 'Con qué trabajan',
+    ayuda: 'Para conectar el sistema con lo que ya usas, no cambiarte de todo.',
+    campos: [
+      {
+        name: 'inventario', label: '¿Dónde vive tu inventario de propiedades?', type: 'radio', required: true,
+        opciones: ['Excel o Google Sheets', 'En mi página web', 'En un CRM', 'En los portales nada más', 'En la cabeza del equipo'],
+      },
+      { name: 'crm', label: '¿Usan algún CRM o sistema? ¿Cuál?', type: 'text', required: false, placeholder: 'EasyBroker, Wasi, HubSpot... o "ninguno"' },
+      {
+        name: 'idiomas', label: '¿Necesitas que atienda en otro idioma además de español?', type: 'radio', required: true,
+        opciones: ['Solo español', 'Español e inglés', 'Otro idioma'],
+      },
+    ],
+  },
+  {
+    id: 'objetivo',
+    titulo: 'Qué quieres resolver',
+    ayuda: 'Sé lo más concreto que puedas: esto es lo que leemos primero.',
+    campos: [
+      {
+        name: 'objetivo', label: '¿Qué es lo que más te urge? (marca hasta 2)', type: 'checkbox', required: true,
+        opciones: [
+          'Que nadie se quede sin respuesta',
+          'Que me lleguen leads ya calificados',
+          'Agendar más visitas',
+          'Dejar de perder los leads de la publicidad',
+          'Ordenar y ver todo en un solo lugar',
+          'Que mi equipo deje de repetir lo mismo',
+        ],
+      },
+      { name: 'preguntas_frecuentes', label: '¿Qué es lo que más te preguntan tus clientes?', type: 'textarea', required: true, placeholder: 'Precio, si sigue disponible, si aceptan Infonavit, cuánto de enganche...' },
+      { name: 'contexto', label: '¿Algo más que debamos saber?', type: 'textarea', required: false, placeholder: 'Lo que sea: intentos anteriores, cómo trabaja tu equipo, temas que jamás debe tocar el sistema.' },
+      {
+        name: 'arranque', label: '¿Para cuándo lo quieres funcionando?', type: 'radio', required: true,
+        opciones: ['Esta semana', 'Este mes', 'En los próximos 3 meses', 'Solo estoy explorando'],
+      },
+      {
+        name: 'presupuesto', label: '¿Con qué presupuesto cuentas para resolverlo?', type: 'radio', required: true,
+        opciones: ['Menos de $1,000 USD', '$1,000 a $3,000 USD', '$3,000 a $8,000 USD', 'Más de $8,000 USD', 'Necesito que me orienten'],
+        nota: 'Nos ayuda a proponerte algo realista desde la primera llamada. No es un compromiso.',
+      },
+    ],
+  },
+  {
+    id: 'contacto',
+    titulo: 'Cómo te contactamos',
+    ayuda: 'Último paso. Revisamos las solicitudes y respondemos en 24 horas hábiles.',
+    campos: [
+      { name: 'nombre', label: 'Tu nombre completo', type: 'text', required: true, placeholder: 'Miguel Herrera' },
+      { name: 'rol', label: '¿Cuál es tu rol?', type: 'radio', required: true, opciones: ['Dueño o socio', 'Director o gerente', 'Asesor', 'Marketing'] },
+      { name: 'email', label: 'Tu correo', type: 'email', required: true, placeholder: 'miguel@inmobiliaria.com' },
+      { name: 'whatsapp', label: 'Tu WhatsApp (con código de país)', type: 'tel', required: true, placeholder: '+52 81 1234 5678' },
+    ],
+  },
+];
+---
+
+<section id="aplicar" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-20 lg:py-28">
+  <div class="mb-10 text-center">
+    <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Solicitud</p>
+    <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+      Cuéntanos de tu inmobiliaria
+    </h2>
+    <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-700">
+      Son 5 minutos. Con esto llegamos a la llamada sabiendo de qué hablar y te podemos dar un
+      número real, no un rango inventado.
+    </p>
+  </div>
+
+  <div class="overflow-hidden rounded-3xl border border-ink-300/60 bg-white shadow-xl shadow-ink-950/5">
+    <!-- Progreso -->
+    <div class="border-b border-ink-100 px-6 py-5 sm:px-9" data-progreso>
+      <div class="flex items-baseline justify-between gap-4">
+        <p class="text-sm font-medium">
+          Paso <span data-paso-actual>1</span> de {pasos.length + 1}
+        </p>
+        <p class="text-sm text-ink-500" data-paso-titulo>{pasos[0].titulo}</p>
+      </div>
+      <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-ink-100">
+        <div
+          class="h-full rounded-full bg-brand-600 transition-all duration-300"
+          style={`width:${100 / pasos.length}%`}
+          data-barra>
+        </div>
+      </div>
+    </div>
+
+    <form id="form-aplicar" novalidate>
+      <!-- trampa para bots -->
+      <div class="absolute left-[-9999px]" aria-hidden="true">
+        <label>No llenar<input type="text" name="empresa_web" tabindex="-1" autocomplete="off" /></label>
+      </div>
+
+      {
+        pasos.map((paso, i) => (
+          <fieldset class:list={['px-6 py-8 sm:px-9', i > 0 && 'hidden']} data-paso={i}>
+            <legend class="sr-only">{paso.titulo}</legend>
+            <p class="text-xl font-semibold">{paso.titulo}</p>
+            <p class="mt-1.5 text-sm text-ink-500">{paso.ayuda}</p>
+
+            <div class="mt-8 space-y-7">
+              {paso.campos.map((campo) => (
+                <div data-campo={campo.name}>
+                  <label
+                    class="block text-[15px] font-medium leading-snug"
+                    for={['text', 'email', 'tel', 'textarea'].includes(campo.type) ? `f-${campo.name}` : undefined}>
+                    {campo.label}
+                    {!campo.required && <span class="ml-1.5 text-xs font-normal text-ink-500">(opcional)</span>}
+                  </label>
+                  {campo.nota && <p class="mt-1 text-[13px] leading-relaxed text-ink-500">{campo.nota}</p>}
+
+                  {['text', 'email', 'tel'].includes(campo.type) && (
+                    <input
+                      id={`f-${campo.name}`}
+                      type={campo.type}
+                      name={campo.name}
+                      placeholder={campo.placeholder}
+                      required={campo.required}
+                      autocomplete={campo.type === 'email' ? 'email' : campo.type === 'tel' ? 'tel' : 'off'}
+                      class="mt-2.5 w-full rounded-xl border border-ink-300 bg-white px-4 py-3 text-[15px] outline-none transition placeholder:text-ink-300 focus:border-brand-600 focus:ring-4 focus:ring-brand-100"
+                    />
+                  )}
+
+                  {campo.type === 'textarea' && (
+                    <textarea
+                      id={`f-${campo.name}`}
+                      name={campo.name}
+                      rows="3"
+                      placeholder={campo.placeholder}
+                      required={campo.required}
+                      class="mt-2.5 w-full resize-y rounded-xl border border-ink-300 bg-white px-4 py-3 text-[15px] outline-none transition placeholder:text-ink-300 focus:border-brand-600 focus:ring-4 focus:ring-brand-100"
+                    />
+                  )}
+
+                  {(campo.type === 'radio' || campo.type === 'checkbox') && (
+                    <div class="mt-3 flex flex-wrap gap-2.5" role="group" aria-label={campo.label}>
+                      {campo.opciones?.map((op, oi) => (
+                        <label class="cursor-pointer">
+                          <input
+                            type={campo.type}
+                            name={campo.name}
+                            value={op}
+                            id={`f-${campo.name}-${oi}`}
+                            data-required={campo.required ? 'si' : undefined}
+                            class="peer sr-only"
+                          />
+                          <span class="inline-block rounded-xl border border-ink-300 bg-white px-4 py-2.5 text-[14.5px] transition hover:border-ink-500 peer-checked:border-brand-600 peer-checked:bg-brand-600 peer-checked:text-white peer-focus-visible:ring-4 peer-focus-visible:ring-brand-100">
+                            {op}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  <p class="mt-2 hidden text-[13px] font-medium text-red-600" data-error>
+                    Nos falta este dato.
+                  </p>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        ))
+      }
+
+      <!-- Resumen -->
+      <fieldset class="hidden px-6 py-8 sm:px-9" data-paso={pasos.length}>
+        <legend class="sr-only">Revisa tu solicitud</legend>
+        <p class="text-xl font-semibold">Revisa antes de enviar</p>
+        <p class="mt-1.5 text-sm text-ink-500">
+          Si algo no quedó bien, regresa y cámbialo. Nadie ve esto más que nosotros.
+        </p>
+        <dl class="mt-7 divide-y divide-ink-100 rounded-2xl border border-ink-100 bg-ink-50" data-resumen></dl>
+
+        <label class="mt-7 flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-ink-700">
+          <input
+            type="checkbox"
+            name="acepto"
+            required
+            class="mt-0.5 size-4 shrink-0 rounded border-ink-300 accent-[var(--color-brand-600)]"
+          />
+          <span>
+            Acepto que HorizontesHome me contacte por correo o WhatsApp sobre esta solicitud. No
+            compartimos tus datos con nadie más.
+          </span>
+        </label>
+        <p class="mt-2 hidden text-[13px] font-medium text-red-600" data-error-acepto>
+          Necesitamos tu permiso para poder contactarte.
+        </p>
+      </fieldset>
+
+      <!-- Navegación -->
+      <div class="flex items-center justify-between gap-4 border-t border-ink-100 bg-ink-50 px-6 py-5 sm:px-9">
+        <button
+          type="button"
+          data-atras
+          class="rounded-xl px-4 py-2.5 text-sm font-medium text-ink-500 transition hover:text-ink-900 disabled:invisible">
+          ← Atrás
+        </button>
+        <button
+          type="button"
+          data-siguiente
+          class="rounded-xl bg-brand-600 px-6 py-3 font-medium text-white transition hover:bg-brand-700">
+          Siguiente
+        </button>
+        <button
+          type="submit"
+          data-enviar
+          class="hidden rounded-xl bg-brand-600 px-6 py-3 font-medium text-white transition hover:bg-brand-700 disabled:opacity-60">
+          Enviar solicitud
+        </button>
+      </div>
+    </form>
+
+    <!-- Éxito -->
+    <div class="hidden px-6 py-16 text-center sm:px-9" data-exito>
+      <span class="mx-auto grid size-14 place-items-center rounded-2xl bg-accent-100 text-accent-600">
+        <svg viewBox="0 0 20 20" class="size-7" fill="currentColor" aria-hidden="true">
+          <path d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z" />
+        </svg>
+      </span>
+      <h3 class="mt-6 text-2xl font-semibold">Recibimos tu solicitud</h3>
+      <p class="mx-auto mt-4 max-w-md leading-relaxed text-ink-700">
+        La revisamos con calma y te escribimos en menos de 24 horas hábiles. Si encajamos, en ese
+        mismo correo te mandamos el link para agendar la llamada de 30 minutos.
+      </p>
+    </div>
+
+    <!-- Error de envío -->
+    <div class="hidden border-t border-red-200 bg-red-50 px-6 py-5 text-sm leading-relaxed text-red-700 sm:px-9" data-fallo>
+      No pudimos enviar tu solicitud. Escríbenos directo a
+      <a href="mailto:contacto@innovandohorizontes.com" class="font-semibold underline">contacto@innovandohorizontes.com</a>
+      y lo resolvemos.
+    </div>
+  </div>
+
+  <p class="mt-6 text-center text-sm text-ink-500">
+    ¿Prefieres escribirnos primero?
+    <a href="mailto:contacto@innovandohorizontes.com" class="font-medium text-brand-700 underline">
+      contacto@innovandohorizontes.com
+    </a>
+  </p>
+</section>
+
+<script>
+  const form = document.getElementById('form-aplicar') as HTMLFormElement | null;
+  if (form) {
+    const root = form.closest('div')!;
+    const fieldsets = Array.from(form.querySelectorAll<HTMLFieldSetElement>('[data-paso]'));
+    const total = fieldsets.length;
+    const btnAtras = form.querySelector<HTMLButtonElement>('[data-atras]')!;
+    const btnSig = form.querySelector<HTMLButtonElement>('[data-siguiente]')!;
+    const btnEnviar = form.querySelector<HTMLButtonElement>('[data-enviar]')!;
+    const barra = root.querySelector<HTMLElement>('[data-barra]')!;
+    const numPaso = root.querySelector<HTMLElement>('[data-paso-actual]')!;
+    const tituloPaso = root.querySelector<HTMLElement>('[data-paso-titulo]')!;
+    const resumen = form.querySelector<HTMLElement>('[data-resumen]')!;
+    const exito = root.querySelector<HTMLElement>('[data-exito]')!;
+    const fallo = root.querySelector<HTMLElement>('[data-fallo]')!;
+    const progreso = root.querySelector<HTMLElement>('[data-progreso]')!;
+    const CLAVE = 'hh-aplicacion';
+
+    let actual = 0;
+
+    // ---- Persistencia local, por si cierran la pestaña a medias
+    const guardar = () => {
+      const datos: Record<string, string[]> = {};
+      new FormData(form).forEach((v, k) => {
+        if (typeof v !== 'string' || k === 'empresa_web') return;
+        (datos[k] ||= []).push(v);
+      });
+      try {
+        localStorage.setItem(CLAVE, JSON.stringify(datos));
+      } catch {}
+    };
+
+    const restaurar = () => {
+      let datos: Record<string, string[]>;
+      try {
+        datos = JSON.parse(localStorage.getItem(CLAVE) || '{}');
+      } catch {
+        return;
+      }
+      for (const [k, valores] of Object.entries(datos)) {
+        for (const val of valores) {
+          const campos = form.querySelectorAll<HTMLInputElement>(`[name="${CSS.escape(k)}"]`);
+          for (const campo of campos) {
+            if (campo.type === 'radio' || campo.type === 'checkbox') {
+              if (campo.value === val) campo.checked = true;
+            } else {
+              campo.value = val;
+            }
+          }
+        }
+      }
+    };
+
+    form.addEventListener('input', guardar);
+    form.addEventListener('change', guardar);
+    restaurar();
+
+    // ---- Validación por paso
+    const validarPaso = (i: number) => {
+      const fs = fieldsets[i];
+      let ok = true;
+      let primerFallo: HTMLElement | null = null;
+
+      fs.querySelectorAll<HTMLElement>('[data-campo]').forEach((grupo) => {
+        const err = grupo.querySelector<HTMLElement>('[data-error]');
+        const texto = grupo.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+          'input[type="text"], input[type="email"], input[type="tel"], textarea'
+        );
+        const marcables = grupo.querySelectorAll<HTMLInputElement>(
+          'input[type="radio"][data-required], input[type="checkbox"][data-required]'
+        );
+
+        let valido = true;
+        if (texto?.required) valido = texto.value.trim().length > 0 && texto.checkValidity();
+        if (marcables.length) valido = Array.from(marcables).some((m) => m.checked);
+
+        if (!valido) {
+          ok = false;
+          err?.classList.remove('hidden');
+          texto?.classList.add('border-red-400');
+          primerFallo ||= grupo;
+        } else {
+          err?.classList.add('hidden');
+          texto?.classList.remove('border-red-400');
+        }
+      });
+
+      if (!ok && primerFallo) primerFallo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return ok;
+    };
+
+    // ---- Render del resumen
+    const titulos: Record<string, string> = {};
+    form.querySelectorAll<HTMLElement>('[data-campo]').forEach((g) => {
+      const nombre = g.dataset.campo!;
+      titulos[nombre] = g.querySelector('label')?.childNodes[0]?.textContent?.trim() || nombre;
+    });
+
+    const pintarResumen = () => {
+      const datos = new Map<string, string[]>();
+      new FormData(form).forEach((v, k) => {
+        if (typeof v !== 'string' || !v.trim() || k === 'empresa_web' || k === 'acepto') return;
+        datos.set(k, [...(datos.get(k) || []), v]);
+      });
+      resumen.innerHTML = '';
+      for (const [k, v] of datos) {
+        const fila = document.createElement('div');
+        fila.className = 'grid gap-1 px-5 py-3.5 sm:grid-cols-[1fr_1.1fr] sm:gap-4';
+        const dt = document.createElement('dt');
+        dt.className = 'text-[13px] text-ink-500';
+        dt.textContent = titulos[k] || k;
+        const dd = document.createElement('dd');
+        dd.className = 'text-[14.5px] font-medium';
+        dd.textContent = v.join(' · ');
+        fila.append(dt, dd);
+        resumen.append(fila);
+      }
+    };
+
+    // ---- Navegación
+    const mostrar = (i: number) => {
+      fieldsets.forEach((fs, idx) => fs.classList.toggle('hidden', idx !== i));
+      actual = i;
+      const esUltimo = i === total - 1;
+      btnSig.classList.toggle('hidden', esUltimo);
+      btnEnviar.classList.toggle('hidden', !esUltimo);
+      btnAtras.disabled = i === 0;
+      barra.style.width = `${((i + 1) / total) * 100}%`;
+      numPaso.textContent = String(i + 1);
+      tituloPaso.textContent = esUltimo
+        ? 'Revisa y envía'
+        : fieldsets[i].querySelector('p')?.textContent || '';
+      if (esUltimo) pintarResumen();
+      progreso.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    btnSig.addEventListener('click', () => {
+      if (validarPaso(actual)) mostrar(Math.min(actual + 1, total - 1));
+    });
+    btnAtras.addEventListener('click', () => mostrar(Math.max(actual - 1, 0)));
+
+    // Enter avanza en vez de enviar a medias
+    form.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && (e.target as HTMLElement).tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        if (actual < total - 1) btnSig.click();
+      }
+    });
+
+    // ---- Envío
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const acepto = form.querySelector<HTMLInputElement>('[name="acepto"]')!;
+      const errAcepto = form.querySelector<HTMLElement>('[data-error-acepto]')!;
+      if (!acepto.checked) {
+        errAcepto.classList.remove('hidden');
+        return;
+      }
+      errAcepto.classList.add('hidden');
+      fallo.classList.add('hidden');
+      btnEnviar.disabled = true;
+      btnEnviar.textContent = 'Enviando...';
+
+      const datos: Record<string, string> = {};
+      new FormData(form).forEach((v, k) => {
+        if (typeof v !== 'string') return;
+        datos[k] = datos[k] ? `${datos[k]} · ${v}` : v;
+      });
+      datos.etiquetas = Object.entries(titulos)
+        .map(([k, t]) => `${k}=${t}`)
+        .join('|');
+
+      try {
+        const res = await fetch('/api/aplicar', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(datos),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.classList.add('hidden');
+        progreso.classList.add('hidden');
+        exito.classList.remove('hidden');
+        exito.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        try {
+          localStorage.removeItem(CLAVE);
+        } catch {}
+      } catch {
+        fallo.classList.remove('hidden');
+        btnEnviar.disabled = false;
+        btnEnviar.textContent = 'Enviar solicitud';
+      }
+    });
+  }
+</script>

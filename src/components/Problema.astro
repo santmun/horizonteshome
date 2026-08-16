@@ -1,0 +1,96 @@
+---
+const linea = [
+  {
+    hora: '10:47 pm',
+    titulo: 'Llega el mensaje',
+    texto:
+      '"Hola, ¿sigue disponible la casa de Av. Central?" Tu anuncio hizo su trabajo. Pagaste por ese mensaje.',
+    tono: 'ok',
+  },
+  {
+    hora: '10:48 pm',
+    titulo: 'Nadie contesta',
+    texto: 'Tu asesor está cenando. Es martes. Es de noche. Es completamente normal.',
+    tono: 'neutro',
+  },
+  {
+    hora: '8:30 am',
+    titulo: 'Se abre el celular',
+    texto:
+      'Hay 14 mensajes nuevos. Se contestan los primeros. Este quedó a la mitad de la lista.',
+    tono: 'neutro',
+  },
+  {
+    hora: '9:15 am',
+    titulo: 'Por fin la respuesta',
+    texto: '"Hola, buen día, ¿en qué te puedo ayudar?" Diez horas después.',
+    tono: 'neutro',
+  },
+  {
+    hora: '9:16 am',
+    titulo: 'Ya es tarde',
+    texto: 'Visto. Sin respuesta. Anoche escribió a tres inmobiliarias. Otra contestó primero.',
+    tono: 'malo',
+  },
+];
+---
+
+<section id="problema" class="border-y border-ink-100 bg-white">
+  <div class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
+    <div class="max-w-2xl">
+      <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Lo que pasa hoy</p>
+      <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+        El lead no se perdió por el precio. Se perdió por diez horas de silencio.
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-ink-700">
+        Así se ve la mayoría de los leads que pagas. No es culpa de tu equipo: es que los clientes
+        buscan casa a la hora que pueden, y esa hora casi nunca es tu horario de oficina.
+      </p>
+    </div>
+
+    <ol class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-ink-100 sm:grid-cols-5">
+      {
+        linea.map((p) => (
+          <li class="reveal bg-white p-6">
+            <p
+              class:list={[
+                'text-sm font-semibold',
+                p.tono === 'malo' ? 'text-red-600' : p.tono === 'ok' ? 'text-accent-600' : 'text-ink-500',
+              ]}>
+              {p.hora}
+            </p>
+            <p class="mt-3 font-medium leading-snug">{p.titulo}</p>
+            <p class="mt-2 text-sm leading-relaxed text-ink-700">{p.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="mt-14 grid gap-8 rounded-2xl bg-ink-950 p-8 text-white sm:grid-cols-[1.2fr_1fr] sm:p-12">
+      <div>
+        <h3 class="text-2xl font-semibold leading-snug">
+          Contratar a alguien para contestar de noche no es la solución.
+        </h3>
+        <p class="mt-4 leading-relaxed text-ink-300">
+          Un asesor más son tres sueldos al año, capacitación, rotación y de todos modos duerme. El
+          problema no es que falte gente: es que las primeras cinco preguntas de todo cliente son
+          siempre las mismas, y hoy las contesta tu mejor vendedor a las 9 de la mañana en vez de
+          estar cerrando.
+        </p>
+      </div>
+      <ul class="space-y-4 text-sm">
+        {
+          [
+            'Los primeros cinco minutos son los que deciden si te contestan de vuelta.',
+            'Tu asesor repite las mismas preguntas veinte veces al día.',
+            'Los leads de hace tres semanas nadie los vuelve a tocar.',
+          ].map((t) => (
+            <li class="flex gap-3 border-l-2 border-brand-500 pl-4 leading-relaxed text-ink-300">
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

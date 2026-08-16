@@ -1,0 +1,71 @@
+---
+const preguntas = [
+  {
+    q: '¿Se nota que no es una persona?',
+    a: 'No escribe como robot: contesta con el tono de tu inmobiliaria, entiende faltas de ortografía, audios y fotos. Dicho esto, nunca le decimos a un cliente que está hablando con una persona. Si pregunta directamente, lo dice, y en la práctica a nadie le molesta cuando le están resolviendo lo que necesita a las once de la noche.',
+  },
+  {
+    q: '¿De dónde saca las propiedades que muestra?',
+    a: 'De tu inventario, como lo tengas hoy. Un Excel, una hoja de Google, tu página o tu CRM: nosotros lo ordenamos en el día 1. Solo puede hablar de las propiedades que están ahí, y cuando actualizas tu inventario se actualiza lo que ofrece.',
+  },
+  {
+    q: '¿Tengo que cambiar mi número de WhatsApp?',
+    a: 'No. Trabajamos con el número que tus clientes ya conocen y con las cuentas de Instagram y Facebook que ya tienes. Nadie tiene que enterarse de nada ni volver a guardar un contacto.',
+  },
+  {
+    q: '¿Qué pasa cuando un cliente pregunta algo que no sabe?',
+    a: 'Avisa que lo va a confirmar y te pasa la conversación con todo lo que ya habló. Nunca inventa una respuesta para salir del paso. Tú defines desde el día 1 qué temas siempre quieres atender personalmente: negociaciones, casos raros, quejas.',
+  },
+  {
+    q: '¿Y mis asesores? ¿Esto los reemplaza?',
+    a: 'No, y sinceramente no queremos venderte eso. Lo que hace es quitarles las primeras cinco preguntas de siempre y el trabajo de perseguir a quien no contesta, para que dediquen su día a mostrar propiedades y cerrar. La mayoría de los equipos lo agradece a la semana.',
+  },
+  {
+    q: '¿Puedo meterme a una conversación?',
+    a: 'Cuando quieras. Entras al chat, el agente se hace a un lado y tú sigues la plática. Cuando terminas, retoma solo. También puedes pedirle que te avise por WhatsApp o Telegram cada vez que haya un cliente caliente.',
+  },
+  {
+    q: '¿De quién son los datos de mis clientes?',
+    a: 'Tuyos. Todo vive en una cuenta a tu nombre: las conversaciones, los datos y tu inventario. Nosotros lo construimos y lo mantenemos, pero la llave es tuya y te la puedes llevar el día que quieras.',
+  },
+  {
+    q: '¿Cuánto cuesta?',
+    a: 'Depende del tamaño de tu operación: cuántas propiedades manejas, cuántos canales conectamos y qué tanto volumen de mensajes recibes. Por eso pedimos que apliques en vez de poner un precio genérico. Después de la llamada te pasamos un número cerrado, sin sorpresas, y tú decides.',
+  },
+  {
+    q: '¿Qué pasa después de que arranca?',
+    a: 'Las primeras semanas revisamos contigo las conversaciones reales y afinamos lo que haga falta. De ahí en adelante seguimos dándole mantenimiento: cambios de inventario, temporada alta, campañas nuevas, lo que vaya saliendo.',
+  },
+];
+---
+
+<section id="preguntas" class="border-y border-ink-100 bg-white">
+  <div class="mx-auto max-w-3xl px-5 py-20 lg:py-28">
+    <h2 class="text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
+      Lo que siempre nos preguntan
+    </h2>
+
+    <div class="mt-10 divide-y divide-ink-100 border-y border-ink-100">
+      {
+        preguntas.map((p) => (
+          <details class="group">
+            <summary class="flex cursor-pointer list-none items-start justify-between gap-6 py-5 font-medium leading-snug transition hover:text-brand-700">
+              {p.q}
+              <svg
+                viewBox="0 0 20 20"
+                class="mt-1 size-5 shrink-0 text-ink-500 transition group-open:rotate-45"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                aria-hidden="true">
+                <path d="M10 4.5v11M4.5 10h11" />
+              </svg>
+            </summary>
+            <p class="pb-6 pr-10 text-[15px] leading-relaxed text-ink-700">{p.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
