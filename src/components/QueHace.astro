@@ -1,4 +1,6 @@
 ---
+import SectionHead from './SectionHead.astro';
+
 const trabajos = [
   {
     n: '01',
@@ -10,13 +12,13 @@ const trabajos = [
     n: '02',
     titulo: 'Entiende qué está buscando',
     texto:
-      'Comprar o rentar, casa o departamento, la zona, el presupuesto, cuántas recámaras y para cuándo. Lo pregunta como lo preguntaría un asesor: una cosa a la vez, sin interrogatorio.',
+      'Comprar o rentar, casa o departamento, la zona, el presupuesto, cuántas recámaras y para cuándo. Una cosa a la vez, sin interrogatorio.',
   },
   {
     n: '03',
     titulo: 'Le muestra lo que sí le sirve',
     texto:
-      'Busca en tu inventario y le presenta dos o tres propiedades que encajan con lo que dijo. Si nada encaja, lo registra y le avisa cuando entre algo nuevo que sí.',
+      'Busca en tu inventario y le presenta dos o tres propiedades que encajan. Si nada encaja, lo registra y le avisa cuando entre algo nuevo que sí.',
   },
   {
     n: '04',
@@ -28,7 +30,7 @@ const trabajos = [
     n: '05',
     titulo: 'Te entrega el cliente listo',
     texto:
-      'Cuando el cliente está caliente o pregunta algo que solo tú puedes contestar, te pasa la conversación con todo el contexto anotado. Tú entras a cerrar, no a preguntar lo básico.',
+      'Cuando el cliente está caliente, te pasa la conversación con todo el contexto anotado. Tú entras a cerrar, no a preguntar lo básico.',
   },
   {
     n: '06',
@@ -39,26 +41,23 @@ const trabajos = [
 ];
 ---
 
-<section id="que-hace" class="border-y border-ink-100 bg-white">
-  <div class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
-    <div class="max-w-2xl">
-      <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">El trabajo</p>
-      <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-        Seis cosas que hace todos los días sin que nadie se lo recuerde
-      </h2>
-      <p class="mt-5 text-lg leading-relaxed text-ink-700">
-        No reemplaza a tu equipo. Le quita de encima la parte repetitiva para que tus asesores
-        lleguen a la conversación cuando ya vale la pena tenerla.
-      </p>
-    </div>
+<section id="que-hace" class="bg-surface">
+  <div class="mx-auto max-w-[1360px] px-5 py-24 sm:px-8">
+    <SectionHead
+      kicker="El trabajo"
+      title="Seis cosas que hace todos los días sin que nadie se lo recuerde"
+      lead="No reemplaza a tu equipo. Le quita de encima la parte repetitiva para que tus asesores lleguen a la conversación cuando ya vale la pena tenerla."
+    />
 
-    <div class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div data-reveal class="mt-20 grid gap-x-6 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
       {
         trabajos.map((t) => (
-          <article class="reveal rounded-2xl border border-ink-300/50 bg-ink-50 p-7 transition hover:border-brand-500/50 hover:shadow-lg hover:shadow-brand-600/5">
-            <p class="text-sm font-semibold text-brand-600">{t.n}</p>
-            <h3 class="mt-3 text-lg font-semibold leading-snug">{t.titulo}</h3>
-            <p class="mt-3 text-[15px] leading-relaxed text-ink-700">{t.texto}</p>
+          <article class="group relative flex h-full flex-col rounded-3xl bg-paper px-8 pb-9 pt-12 transition duration-300 hover:-translate-y-1.5 hover:shadow-lift">
+            <span class="display absolute -top-7 left-6 grid size-16 place-items-center rounded-full bg-red text-[26px] text-paper shadow-soft transition group-hover:rotate-[-8deg]">
+              {t.n}
+            </span>
+            <h3 class="display mt-2 text-[27px] leading-[1.12]">{t.titulo}</h3>
+            <p class="mt-3.5 text-[15px] leading-[1.62] text-mute-700">{t.texto}</p>
           </article>
         ))
       }

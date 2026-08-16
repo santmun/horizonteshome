@@ -26,9 +26,18 @@ const {
     <meta property="og:description" content={description} />
     <meta property="og:locale" content="es_MX" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#f3f2f2" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <link
       rel="icon"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%233f6fd8'/%3E%3Cpath d='M26 58 50 36l24 22v18a4 4 0 0 1-4 4H56V64h-12v16H30a4 4 0 0 1-4-4z' fill='white'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f3f2f2'/%3E%3Crect x='22' y='22' width='56' height='56' fill='%23ec3013'/%3E%3C/svg%3E"
     />
     <script
       is:inline
@@ -43,18 +52,18 @@ const {
       })}
     />
   </head>
-  <body class="font-sans antialiased">
+  <body class="antialiased">
     <a
       href="#contenido"
-      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-brand-600 focus:px-4 focus:py-2 focus:text-white"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-red focus:px-4 focus:py-2 focus:font-semibold focus:text-paper"
       >Saltar al contenido</a
     >
     <slot />
 
     <script is:inline>
-      // Aparición suave de secciones
+      // Aparición de secciones al entrar en pantalla
       (() => {
-        const els = document.querySelectorAll('.reveal');
+        const els = document.querySelectorAll('[data-reveal]');
         if (!('IntersectionObserver' in window)) {
           els.forEach((el) => el.classList.add('is-visible'));
           return;
@@ -68,9 +77,14 @@ const {
               }
             }
           },
-          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+          { threshold: 0.08 }
         );
-        els.forEach((el) => io.observe(el));
+        els.forEach((el) => {
+          // Lo que ya quedó arriba del viewport se muestra sin esperar
+          const r = el.getBoundingClientRect();
+          if (r.bottom < 0 || r.top < window.innerHeight * 0.92) el.classList.add('is-visible');
+          else io.observe(el);
+        });
       })();
     </script>
   </body>

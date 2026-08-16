@@ -1,70 +1,117 @@
 ---
+import { Image } from 'astro:assets';
+import limite from '../assets/limite-descuento.png';
+
 const nunca = [
   {
-    titulo: 'No inventa propiedades',
+    n: '01',
+    titulo: 'No inventa',
+    resalte: 'propiedades',
     texto:
       'Solo puede hablar de lo que está en tu inventario. Si le preguntan por algo que no tienes, lo dice y ofrece lo que sí.',
   },
   {
-    titulo: 'No inventa precios',
-    texto:
-      'Cita el precio exacto que tú cargaste. Ni uno distinto, ni un aproximado, ni un "creo que...".',
+    n: '02',
+    titulo: 'No inventa',
+    resalte: 'precios',
+    texto: 'Cita el precio exacto que tú cargaste. Ni uno distinto, ni un aproximado, ni un "creo que…".',
   },
   {
-    titulo: 'No promete descuentos ni comisiones',
+    n: '03',
+    titulo: 'No promete',
+    resalte: 'descuentos ni comisiones',
     texto:
       'Si el cliente quiere negociar, esa conversación te la pasa a ti. Nunca compromete un número que tú no autorizaste.',
   },
   {
-    titulo: 'No calcula tu crédito',
+    n: '04',
+    titulo: 'No calcula tu',
+    resalte: 'crédito',
     texto:
       'Explica las opciones de financiamiento que sí manejas, pero mensualidades y aprobaciones las define el banco o tu asesor.',
   },
   {
-    titulo: 'No cierra la venta',
+    n: '05',
+    titulo: 'No cierra',
+    resalte: 'la venta',
     texto:
       'Ese sigue siendo tu trabajo, y así debe ser. Su trabajo es que llegues a la mesa con el cliente correcto.',
   },
   {
-    titulo: 'No se queda callado si no sabe',
+    n: '06',
+    titulo: 'No se queda',
+    resalte: 'callado si no sabe',
     texto:
       'Cuando algo se sale de lo suyo, avisa que va a confirmarlo y te entrega la conversación. Nunca improvisa.',
   },
 ];
 ---
 
-<section class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
-  <div class="max-w-2xl">
-    <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Los límites</p>
-    <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-      Lo que nunca va a hacer, aunque se lo pidan
-    </h2>
-    <p class="mt-5 text-lg leading-relaxed text-ink-700">
-      Sabemos cuál es el miedo real: que le diga una barbaridad a un cliente y tú te enteres
-      después. Por eso lo primero que definimos contigo no es lo que puede decir, sino lo que
-      tiene prohibido decir.
-    </p>
+<section class="border-b-2 border-line">
+  <div class="mx-auto max-w-[1360px] px-5 pt-20 sm:px-8">
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_minmax(0,.85fr)] lg:gap-16">
+      <div>
+        <div class="kicker">Los límites</div>
+        <h2 class="display mt-4 text-[clamp(32px,4.2vw,58px)]">
+          Lo que nunca va a hacer, aunque se lo pidan
+        </h2>
+        <p class="mt-5 max-w-[560px] text-base leading-[1.68] text-mute-700">
+          Sabemos cuál es el miedo real: que le diga una barbaridad a un cliente y tú te enteres
+          después. Por eso lo primero que definimos contigo no es lo que puede decir, sino lo que
+          tiene prohibido decir.
+        </p>
+      </div>
+
+      <figure class="marco relative isolate m-0 rotate-[1.6deg] overflow-hidden rounded-3xl">
+        <Image
+          src={limite}
+          alt="Conversación donde el cliente pide un 10% de descuento y el agente responde que no lo autoriza él, que le pasa el mensaje a Miguel. Etiqueta: pasado al asesor."
+          widths={[600, 900, 1400]}
+          sizes="(min-width: 1024px) 45vw, 100vw"
+          loading="lazy"
+          class="h-full w-full object-cover"
+        />
+      </figure>
+    </div>
   </div>
 
-  <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-    {
-      nunca.map((n) => (
-        <div class="reveal rounded-2xl border border-ink-300/50 bg-white p-6">
-          <span class="grid size-9 place-items-center rounded-lg bg-red-50 text-red-600">
-            <svg viewBox="0 0 20 20" class="size-5" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <circle cx="10" cy="10" r="7.2" />
-              <path d="M5.2 5.2l9.6 9.6" stroke-linecap="round" />
-            </svg>
-          </span>
-          <h3 class="mt-4 font-semibold leading-snug">{n.titulo}</h3>
-          <p class="mt-2 text-sm leading-relaxed text-ink-700">{n.texto}</p>
-        </div>
-      ))
-    }
+  <div data-reveal class="relative mt-14 overflow-hidden border-t-2 border-line">
+    <div
+      class="pointer-events-none absolute -right-48 top-16 size-[560px] rounded-full border-2 border-red/20"
+      aria-hidden="true">
+    </div>
+    <div
+      class="pointer-events-none absolute -right-24 top-50 size-[340px] rounded-full border-2 border-red/10"
+      aria-hidden="true">
+    </div>
+
+    <div class="relative mx-auto max-w-[1360px] px-5 sm:px-8">
+      {
+        nunca.map((l, i) => (
+          <div
+            class:list={[
+              'group grid items-center gap-x-7 rounded-2xl px-4 py-7 transition duration-300 hover:bg-red-200 sm:px-6 lg:grid-cols-[76px_minmax(280px,1fr)_minmax(280px,1.05fr)]',
+              i < nunca.length - 1 && 'border-b border-line',
+            ]}>
+            <span class="display grid size-14 place-items-center rounded-full border-2 border-red text-[22px] text-red transition group-hover:bg-red group-hover:text-paper">
+              {l.n}
+            </span>
+            <h3 class="display mt-4 text-[clamp(26px,2.6vw,36px)] leading-[1.1] lg:mt-0">
+              {l.titulo} <span class="text-red">{l.resalte}</span>
+            </h3>
+            <p class="mt-3 text-[15px] leading-[1.62] text-mute-700 lg:mt-0">{l.texto}</p>
+          </div>
+        ))
+      }
+    </div>
   </div>
 
-  <p class="mx-auto mt-10 max-w-2xl text-center text-[15px] leading-relaxed text-ink-700">
-    Y una cosa más: todo vive en una cuenta a tu nombre. Las conversaciones, los datos de tus
-    clientes y tu inventario son tuyos. Si un día quieres seguir sin nosotros, te quedas con todo.
-  </p>
+  <div class="border-t-2 border-line bg-red text-paper">
+    <div class="mx-auto max-w-[1360px] px-5 py-14 sm:px-8">
+      <p class="display m-0 max-w-[960px] text-[clamp(26px,3vw,40px)] leading-[1.16]">
+        Todo vive en una cuenta a tu nombre. Las conversaciones, los datos de tus clientes y tu
+        inventario son tuyos. Si un día quieres seguir sin nosotros, te quedas con todo.
+      </p>
+    </div>
+  </div>
 </section>

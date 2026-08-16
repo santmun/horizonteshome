@@ -1,25 +1,42 @@
 @import 'tailwindcss';
 
+/* Sistema "Modernist" — tokens del rediseño, entibiados.
+   Papel crema cálido, tinta casi negra, un solo acento rojo.
+   Las esquinas se redondean lo justo: contenedores y controles sí, la retícula no. */
 @theme {
-  --color-ink-950: #0b1220;
-  --color-ink-900: #111b2e;
-  --color-ink-700: #33415c;
-  --color-ink-500: #64748b;
-  --color-ink-300: #cbd5e1;
-  --color-ink-100: #eef2f7;
-  --color-ink-50: #f7f9fc;
+  --color-paper: #f6f2ea;
+  --color-surface: #ece5d9;
+  --color-ink: #221f1b;
+  --color-line: color-mix(in srgb, #221f1b 26%, transparent);
 
-  --color-brand-700: #2b4fa8;
-  --color-brand-600: #3f6fd8;
-  --color-brand-500: #5b86e5;
-  --color-brand-100: #e5edfd;
+  --color-red: #ec3013;
+  --color-red-100: #fff4f0;
+  --color-red-200: #ffe2d7;
+  --color-red-300: #ffc4b8;
+  --color-red-400: #ff9783;
+  --color-red-500: #ff563c;
+  --color-red-600: #dd2b0f;
+  --color-red-700: #ae1800;
+  --color-red-800: #7c1405;
 
-  --color-accent-600: #0f9d76;
-  --color-accent-100: #d9f5ec;
+  --color-mute-200: #ece6dc;
+  --color-mute-300: #dcd4c7;
+  --color-mute-400: #c0b7a9;
+  --color-mute-500: #9d948a;
+  --color-mute-700: #635d55;
 
-  --font-sans: 'Inter var', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
 
-  --radius-xl2: 1.25rem;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 26px;
+  --radius-2xl: 34px;
+  --radius-3xl: 46px;
+
+  --shadow-soft: 0 2px 8px rgba(34, 31, 27, 0.05), 0 18px 40px -18px rgba(34, 31, 27, 0.18);
+  --shadow-lift: 0 4px 14px rgba(34, 31, 27, 0.07), 0 34px 70px -30px rgba(34, 31, 27, 0.28);
 }
 
 html {
@@ -28,15 +45,131 @@ html {
 }
 
 body {
-  background-color: var(--color-ink-50);
-  color: var(--color-ink-950);
-  font-feature-settings: 'cv02', 'cv03', 'cv04';
+  margin: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
   text-rendering: optimizeLegibility;
 }
 
-/* Anclas por debajo del header fijo */
 [id] {
   scroll-margin-top: 6rem;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-red) 30%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+/* Titulares display: serif, peso normal, muy apretados */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+}
+
+/* Etiqueta de sección: mayúsculas, tracking abierto, roja */
+.kicker {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+
+/* Micro-etiqueta dentro de módulos */
+.micro {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes drawline {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 34s linear infinite;
+}
+.animate-rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.animate-drawline {
+  animation: drawline 0.8s 0.2s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  transform-origin: left;
+}
+.animate-blink {
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+/* Aparición al hacer scroll */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Marco desfasado detrás de una imagen — da profundidad sin cajas duras */
+.marco::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  translate: 16px 16px;
+  border-radius: inherit;
+  background: var(--color-red);
+  z-index: -1;
+}
+.marco-ink::before {
+  background: var(--color-ink);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -49,23 +182,11 @@ body {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Aparición suave al hacer scroll */
-.reveal {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 0.6s ease,
-    transform 0.6s ease;
-}
-.reveal.is-visible {
-  opacity: 1;
-  transform: none;
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
+  [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+  .animate-marquee {
+    animation: none;
   }
 }

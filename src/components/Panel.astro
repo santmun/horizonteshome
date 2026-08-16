@@ -1,113 +1,444 @@
 ---
-const columnas = [
-  {
-    titulo: 'Nuevos',
-    tono: 'bg-ink-100 text-ink-700',
-    leads: [
-      { nombre: 'Laura M.', dato: 'Renta · Depa · Centro · $18k' },
-      { nombre: 'Carlos R.', dato: 'Compra · Casa · Norte · $2.8M' },
-    ],
-  },
-  {
-    titulo: 'Calificados',
-    tono: 'bg-brand-100 text-brand-700',
-    leads: [
-      { nombre: 'Ana G.', dato: 'Compra · 3 rec · Sur · $3.2M' },
-      { nombre: 'Jorge P.', dato: 'Compra · Terreno · Poniente' },
-      { nombre: 'Familia Ruiz', dato: 'Visita sábado 11:00 am' },
-    ],
-  },
-  {
-    titulo: 'Cerrados',
-    tono: 'bg-accent-100 text-accent-600',
-    leads: [{ nombre: 'Sofía L.', dato: 'Roble 214 · Escriturado' }],
-  },
+import SectionHead from './SectionHead.astro';
+
+const tabs = [
+  { id: 'bandeja', label: 'Bandeja' },
+  { id: 'analiticas', label: 'Analíticas' },
+  { id: 'ficha', label: 'Ficha del cliente' },
+  { id: 'avisos', label: 'Avisos' },
+  { id: 'inventario', label: 'Inventario' },
+];
+
+const conversaciones = [
+  { n: 'Ana G.', h: '23:04', d: 'WhatsApp · Compra · Sur · $3.2M', activa: true },
+  { n: 'Familia Ruiz', h: '23:11', d: 'Instagram · Visita sábado 11:00' },
+  { n: 'Carlos R.', h: '08:02', d: 'Facebook · Compra · Norte · $2.8M' },
+  { n: 'Laura M.', h: '08:40', d: 'Web · Renta · Centro · $18k' },
+  { n: 'Jorge P.', h: '09:12', d: 'WhatsApp · Terreno · Poniente' },
+];
+
+const kpis = [
+  { k: 'Mensajes recibidos', v: '248', n: '+38% vs. semana pasada', destacado: true },
+  { k: 'Leads calificados', v: '61', n: '24.6% de los que escribieron' },
+  { k: 'Visitas agendadas', v: '19', n: '7 confirmadas por asesor' },
+  { k: 'Primera respuesta', v: '9', suf: ' s', n: 'promedio, incluyendo madrugada' },
+];
+
+const horas = [18, 12, 9, 22, 38, 52, 61, 48, 57, 72, 88, 100, 66, 34];
+const preguntas = [
+  ['¿Sigue disponible?', 38],
+  ['Precio y enganche', 27],
+  ['¿Aceptan crédito?', 19],
+  ['Agendar visita', 16],
+] as const;
+
+const ficha = [
+  ['Operación', 'Compra'],
+  ['Presupuesto', 'Hasta $3.2M'],
+  ['Zona', 'Norte / Sur'],
+  ['Recámaras', '3'],
+  ['Para cuándo', '2 – 3 meses'],
+  ['Crédito', 'Infonavit + bancario'],
+];
+
+const historial = [
+  ['12 may', 'Escribió por el anuncio de Av. Central'],
+  ['12 may', 'El agente calificó presupuesto y zona'],
+  ['12 may', 'Le mostró Roble 214 y Palma 87'],
+  ['14 may', 'Visita agendada · sábado 11:00 am', true],
+  ['16 may', 'Preguntó por el crédito · pasada a Miguel'],
+] as const;
+
+const avisos = [
+  ['Cliente molesto', 'Jorge P. escribió tres veces por el terreno de Poniente y sigue esperando el plano.', 'hace 40 min'],
+  ['Fuera de alcance', 'Alguien pidió negociar la comisión. El agente no contesta eso: la conversación es tuya.', 'hace 2 h'],
+  ['Sin inventario', '4 personas buscaron depa en renta menor a $12k esta semana y no tienes ninguno.', 'hoy'],
+  ['Reporte', 'Tu resumen del lunes está listo: 248 mensajes, 61 calificados, 19 visitas.', '8:00 am'],
+];
+
+const inventario = [
+  ['Roble 214', 'Casa · 3 rec · 180 m²', 'Norte', '$2.95M', 'Disponible', '31 veces'],
+  ['Palma 87', 'Casa · 3 rec · 165 m²', 'Norte', '$3.10M', 'Disponible', '24 veces'],
+  ['Av. Central 1120', 'Depa · 2 rec · 92 m²', 'Centro', '$18k / mes', 'Apartada', '47 veces'],
+  ['Terreno Poniente', 'Terreno · 420 m²', 'Poniente', '$1.60M', 'Disponible', '9 veces'],
 ];
 
 const capacidades = [
-  {
-    titulo: 'Cada cliente con su ficha',
-    texto:
-      'Qué busca, cuánto puede pagar, en qué zona y en qué punto va la conversación. Sin que nadie lo capture a mano.',
-  },
-  {
-    titulo: 'Te avisa cuando importa',
-    texto:
-      'Si un cliente se molestó o si una venta se está enfriando, te llega el aviso a ti, no se queda perdido en un chat.',
-  },
-  {
-    titulo: 'Tu reporte cada mañana',
-    texto:
-      'Cuántos escribieron, cuántos calificaron, cuántas visitas se agendaron y qué es lo que más está preguntando la gente.',
-  },
-  {
-    titulo: 'Puedes tomar el control',
-    texto:
-      'Entras al chat cuando quieras y el agente se hace a un lado. Cuando terminas, retoma solo.',
-  },
+  ['Cada cliente con su ficha', 'Qué busca, cuánto puede pagar y en qué punto va la conversación. Sin que nadie lo capture a mano.'],
+  ['Te avisa cuando importa', 'Si un cliente se molestó o una venta se enfría, te llega el aviso a ti, no se queda perdido en un chat.'],
+  ['Tu reporte cada mañana', 'Cuántos escribieron, cuántos calificaron, cuántas visitas y qué es lo que más pregunta la gente.'],
+  ['Puedes tomar el control', 'Entras al chat cuando quieras y el agente se hace a un lado. Cuando terminas, retoma solo.'],
 ];
+
+const celda = 'border-l border-line px-4 py-3.5 text-[13.5px]';
 ---
 
-<section class="border-y border-ink-100 bg-white">
-  <div class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
-    <div class="grid gap-14 lg:grid-cols-[1fr_1fr] lg:items-center">
-      <div>
-        <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Lo que ves tú</p>
-        <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-          Por primera vez vas a saber cuántos clientes tocaron la puerta
-        </h2>
-        <p class="mt-5 text-lg leading-relaxed text-ink-700">
-          Hoy los leads viven repartidos entre el celular de cada asesor. Al terminar el mes nadie
-          sabe realmente cuántos llegaron ni cuántos se cayeron. Eso se acaba: cada conversación
-          queda ordenada en un tablero que tú abres cuando quieras.
-        </p>
+<section id="panel" class="border-b-2 border-line bg-ink text-paper">
+  <div class="mx-auto max-w-[1360px] px-5 py-20 pb-22 sm:px-8">
+    <SectionHead
+      dark
+      kicker="Lo que ves tú"
+      title="Por primera vez vas a saber cuántos clientes tocaron la puerta"
+      lead="Hoy los leads viven repartidos entre el celular de cada asesor. Al terminar el mes nadie sabe cuántos llegaron ni cuántos se cayeron. Eso se acaba: cada conversación queda ordenada en un tablero que tú abres cuando quieras."
+    />
 
-        <dl class="mt-9 grid gap-6 sm:grid-cols-2">
-          {
-            capacidades.map((c) => (
-              <div>
-                <dt class="font-semibold">{c.titulo}</dt>
-                <dd class="mt-1.5 text-sm leading-relaxed text-ink-700">{c.texto}</dd>
-              </div>
-            ))
-          }
-        </dl>
+    <div
+      data-reveal
+      class="mt-13 overflow-hidden rounded-xl border-2 border-paper/30 bg-paper text-ink"
+      data-panel>
+      <div class="flex items-center gap-3.5 border-b-2 border-line bg-surface px-4.5 py-3">
+        <span class="block size-3.5 rounded-sm bg-red"></span>
+        <span class="micro">Panel · Inmobiliaria Herrera</span>
+        <span class="ml-auto flex items-center gap-2 text-xs text-mute-700">
+          <span class="animate-blink block size-2 rounded-full bg-red"></span>
+          <span class="hidden sm:inline">6 conversaciones activas</span>
+        </span>
       </div>
 
-      <div class="reveal rounded-3xl border border-ink-300/60 bg-ink-50 p-5 shadow-xl shadow-ink-950/5">
-        <div class="mb-4 flex items-center justify-between px-1">
-          <p class="text-sm font-semibold">Tus clientes esta semana</p>
-          <span class="rounded-full bg-white px-2.5 py-1 text-xs text-ink-500">6 activos</span>
-        </div>
+      <div class="flex overflow-x-auto border-b-2 border-line" role="tablist" aria-label="Vistas del panel">
+        {
+          tabs.map((t, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${t.id}`}
+              aria-controls={`panel-${t.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              data-tab={t.id}
+              class:list={[
+                'flex-none cursor-pointer whitespace-nowrap px-4 py-3.5 text-left text-[13px] font-extrabold tracking-[.06em] transition-colors sm:flex-1',
+                i > 0 && 'border-l border-line',
+                i === 0 ? 'bg-ink text-paper' : 'bg-transparent text-mute-700 hover:bg-surface',
+              ]}>
+              {t.label}
+            </button>
+          ))
+        }
+      </div>
 
-        <div class="grid gap-3 sm:grid-cols-3">
-          {
-            columnas.map((col) => (
-              <div class="rounded-2xl bg-white p-3">
-                <p class:list={['mb-3 inline-block rounded-lg px-2 py-1 text-xs font-semibold', col.tono]}>
-                  {col.titulo}
-                </p>
-                <div class="space-y-2">
-                  {col.leads.map((l) => (
-                    <div class="rounded-xl border border-ink-100 p-2.5">
-                      <p class="text-[13px] font-medium leading-tight">{l.nombre}</p>
-                      <p class="mt-1 text-[11.5px] leading-tight text-ink-500">{l.dato}</p>
-                    </div>
-                  ))}
+      <!-- BANDEJA -->
+      <div role="tabpanel" id="panel-bandeja" aria-labelledby="tab-bandeja" data-tabpanel="bandeja">
+        <div class="grid min-h-[430px] lg:grid-cols-[minmax(190px,250px)_1fr_minmax(230px,300px)]">
+          <div class="border-b border-line lg:border-b-0 lg:border-r">
+            <div class="micro border-b border-line px-4 py-3 text-mute-700">Todos los canales</div>
+            {
+              conversaciones.map((c, i) => (
+                <div
+                  class:list={[
+                    'px-4 py-3.5',
+                    i < conversaciones.length - 1 && 'border-b border-line',
+                    c.activa && 'border-l-[3px] border-l-red bg-surface',
+                  ]}>
+                  <div class="flex justify-between text-[13px] font-extrabold">
+                    {c.n}
+                    <span class="font-normal text-mute-700">{c.h}</span>
+                  </div>
+                  <div class="mt-1 text-[12.5px] text-mute-700">{c.d}</div>
                 </div>
-              </div>
-            ))
-          }
-        </div>
+              ))
+            }
+          </div>
 
-        <div class="mt-3 rounded-2xl bg-ink-950 p-4 text-white">
-          <p class="text-xs font-medium text-brand-500">Aviso de esta mañana</p>
-          <p class="mt-1.5 text-sm leading-relaxed text-ink-300">
-            Ana G. lleva 2 días sin responder después de preguntar por el crédito.
-            <span class="text-white"> Vale la pena que la llames tú.</span>
+          <div class="flex flex-col border-b border-line lg:border-b-0 lg:border-r">
+            <div class="flex flex-wrap items-center gap-2.5 border-b border-line px-5 py-3">
+              <span class="text-sm font-extrabold">Ana G.</span>
+              <span class="micro rounded-full border border-red px-2.5 py-0.5 text-red">Calificado por el agente</span>
+            </div>
+            <div class="grid flex-1 content-start gap-2.5 p-5">
+              <p class="max-w-[74%] justify-self-end rounded-2xl rounded-br-md bg-ink px-3.5 py-2.75 text-[13.5px] leading-[1.5] text-paper">
+                Hola, vi la casa de Av. Central. ¿Sigue disponible?
+              </p>
+              <p class="max-w-[78%] rounded-2xl rounded-bl-md bg-surface px-3.5 py-2.75 text-[13.5px] leading-[1.5]">
+                Hola 👋 Sí, sigue disponible. ¿La buscas para comprar o para rentar?
+              </p>
+              <p class="max-w-[74%] justify-self-end rounded-2xl rounded-br-md bg-ink px-3.5 py-2.75 text-[13.5px] leading-[1.5] text-paper">
+                Comprar. Pero está algo arriba de mi presupuesto
+              </p>
+              <p class="max-w-[82%] rounded-2xl rounded-bl-md bg-surface px-3.5 py-2.75 text-[13.5px] leading-[1.5]">
+                Te entiendo. ¿En cuánto andas y qué zona te queda bien? Tengo dos opciones de 3
+                recámaras cerca de ahí.
+              </p>
+              <p class="max-w-[74%] justify-self-end rounded-2xl rounded-br-md bg-ink px-3.5 py-2.75 text-[13.5px] leading-[1.5] text-paper">
+                Hasta 3.2 millones, por la zona norte
+              </p>
+              <p class="max-w-[82%] rounded-2xl rounded-bl-md bg-surface px-3.5 py-2.75 text-[13.5px] leading-[1.5]">
+                Perfecto. Tengo <strong>Roble 214</strong> en $2.95M y <strong>Palma 87</strong> en $3.1M.
+                ¿Te late que agendemos una visita el sábado?
+              </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2.5 border-t border-line px-5 py-3">
+              <span class="flex-1 text-[13px] text-mute-500">
+                Escribe para tomar el control de la conversación…
+              </span>
+              <span class="micro text-mute-700">El agente se hace a un lado</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="micro border-b border-line px-4.5 py-3 text-mute-700">Resultado</div>
+            <div class="border-b border-line bg-red-200 p-4.5">
+              <div class="text-[15px] font-extrabold text-red-700">Visita agendada</div>
+              <p class="mt-1.5 text-[13px] leading-[1.55] text-red-800">
+                Sábado 11:00 am · Roble 214. Lead enviado a Miguel con presupuesto, zona y tipo
+                registrados.
+              </p>
+            </div>
+            <dl class="grid gap-3 p-4.5 text-[13px]">
+              {
+                [
+                  ['Canal', 'WhatsApp'],
+                  ['Primera respuesta', '8 segundos'],
+                  ['Mensajes', '14'],
+                  ['Asesor asignado', 'Miguel T.'],
+                ].map(([k, v]) => (
+                  <div class="flex justify-between gap-3">
+                    <dt class="text-mute-700">{k}</dt>
+                    <dd class="font-extrabold">{v}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANALÍTICAS -->
+      <div role="tabpanel" id="panel-analiticas" aria-labelledby="tab-analiticas" data-tabpanel="analiticas" hidden>
+        <div class="min-h-[430px]">
+          <div class="grid border-b border-line sm:grid-cols-2 lg:grid-cols-4">
+            {
+              kpis.map((k, i) => (
+                <div class:list={['px-5.5 py-6', i > 0 && 'sm:border-l sm:border-line']}>
+                  <div class="micro text-mute-700">{k.k}</div>
+                  <div class="display mt-2.5 text-[48px] leading-none">
+                    {k.v}
+                    {k.suf && <span class="text-[22px]">{k.suf}</span>}
+                  </div>
+                  <div class:list={['mt-1.5 text-[12.5px]', k.destacado ? 'font-extrabold text-red' : 'text-mute-700']}>
+                    {k.n}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+
+          <div class="grid lg:grid-cols-2">
+            <div class="border-b border-line px-5.5 py-6 lg:border-b-0 lg:border-r">
+              <div class="micro text-mute-700">Mensajes por hora del día</div>
+              <div class="mt-5.5 flex h-[170px] items-end gap-1.5" aria-hidden="true">
+                {
+                  horas.map((h) => (
+                    <div
+                      class:list={['flex-1 rounded-t-sm', h >= 66 ? 'bg-red' : 'bg-mute-300']}
+                      style={`height:${h}%`}
+                    />
+                  ))
+                }
+              </div>
+              <div class="mt-2.5 flex flex-wrap justify-between gap-2 text-[11.5px] text-mute-700">
+                <span>8 am</span>
+                <span>2 pm</span>
+                <span class="font-extrabold text-red">7 pm – 12 am · 46% de tus mensajes</span>
+              </div>
+            </div>
+            <div class="px-5.5 py-6">
+              <div class="micro text-mute-700">Lo que más preguntan</div>
+              <div class="mt-4 grid gap-3">
+                {
+                  preguntas.map(([q, pct]) => (
+                    <div>
+                      <div class="flex justify-between text-[13px] font-semibold">
+                        <span>{q}</span>
+                        <span>{pct}%</span>
+                      </div>
+                      <div class="mt-1.5 h-2 rounded-full bg-mute-300">
+                        <div class="h-full rounded-full bg-ink" style={`width:${pct}%`} />
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FICHA -->
+      <div role="tabpanel" id="panel-ficha" aria-labelledby="tab-ficha" data-tabpanel="ficha" hidden>
+        <div class="grid min-h-[430px] lg:grid-cols-2">
+          <div class="border-b border-line lg:border-b-0 lg:border-r">
+            <div class="flex items-center gap-4 border-b border-line px-5.5 py-6">
+              <span class="grid size-14 flex-none place-items-center rounded-lg bg-ink text-xl font-extrabold text-paper">AG</span>
+              <div>
+                <div class="display text-[26px]">Ana G.</div>
+                <div class="text-[13px] text-mute-700">WhatsApp · primera vez el 12 de mayo</div>
+              </div>
+            </div>
+            <dl class="grid grid-cols-2">
+              {
+                ficha.map(([k, v], i) => (
+                  <div
+                    class:list={[
+                      'px-5.5 py-4.5',
+                      i % 2 === 0 && 'border-r border-line',
+                      i < 4 && 'border-b border-line',
+                    ]}>
+                    <dt class="micro text-mute-700">{k}</dt>
+                    <dd class="mt-1.5 text-[15px] font-semibold">{v}</dd>
+                  </div>
+                ))
+              }
+            </dl>
+          </div>
+          <div>
+            <div class="micro border-b border-line px-5.5 py-3.5 text-mute-700">Línea de tiempo</div>
+            <div class="px-5.5 pb-5.5 pt-2">
+              {
+                historial.map(([f, t, destacado], i) => (
+                  <div
+                    class:list={[
+                      'grid grid-cols-[74px_1fr] gap-4 py-3.5',
+                      i < historial.length - 1 && 'border-b border-line',
+                    ]}>
+                    <div class:list={['text-[12.5px]', destacado ? 'font-extrabold text-red' : 'text-mute-700']}>
+                      {f}
+                    </div>
+                    <div class:list={['text-sm', destacado && 'font-semibold']}>{t}</div>
+                  </div>
+                ))
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AVISOS -->
+      <div role="tabpanel" id="panel-avisos" aria-labelledby="tab-avisos" data-tabpanel="avisos" hidden>
+        <div class="min-h-[430px]">
+          <div class="flex flex-wrap items-start gap-5 border-b border-line bg-red-200 px-5.5 py-6">
+            <div class="micro w-[120px] flex-none pt-1 text-red-700">Se está enfriando</div>
+            <div class="min-w-[220px] flex-1">
+              <div class="text-[18px] font-extrabold">
+                Ana G. lleva 2 días sin responder después de preguntar por el crédito
+              </div>
+              <p class="mt-2 text-[14.5px] leading-[1.6] text-red-800">
+                Iba a visita el sábado. Vale la pena que la llames tú antes de que busque en otro lado.
+              </p>
+            </div>
+            <span class="flex-none rounded-lg bg-red px-4.5 py-2.5 text-[13px] font-extrabold text-paper">Abrir chat</span>
+          </div>
+          <div class="p-5.5">
+            {
+              avisos.map(([tipo, texto, cuando], i) => (
+                <div
+                  class:list={[
+                    'grid items-center gap-x-5 gap-y-1 py-4 sm:grid-cols-[120px_1fr_auto]',
+                    i < avisos.length - 1 && 'border-b border-line',
+                  ]}>
+                  <div class="micro text-mute-700">{tipo}</div>
+                  <div class="text-[14.5px]">{texto}</div>
+                  <div class="text-[12.5px] text-mute-700">{cuando}</div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTARIO -->
+      <div role="tabpanel" id="panel-inventario" aria-labelledby="tab-inventario" data-tabpanel="inventario" hidden>
+        <div class="min-h-[430px] overflow-x-auto">
+          <div class="min-w-[720px]">
+            <div class="micro grid grid-cols-[2fr_1fr_1fr_1fr_1fr] border-b-2 border-line text-mute-700">
+              <div class="px-5.5 py-3">Propiedad</div>
+              <div class="border-l border-line px-4 py-3">Zona</div>
+              <div class="border-l border-line px-4 py-3">Precio</div>
+              <div class="border-l border-line px-4 py-3">Estado</div>
+              <div class="border-l border-line px-4 py-3">Mostrada</div>
+            </div>
+            {
+              inventario.map(([nombre, detalle, zona, precio, estado, veces], i) => (
+                <div
+                  class:list={[
+                    'grid grid-cols-[2fr_1fr_1fr_1fr_1fr] items-center',
+                    i < inventario.length - 1 && 'border-b border-line',
+                  ]}>
+                  <div class="flex items-center gap-3.5 px-5.5 py-3.5">
+                    <div
+                      class="h-9.5 w-13 flex-none rounded-md bg-mute-400 [background-image:repeating-linear-gradient(58deg,rgba(0,0,0,.14)_0_2px,transparent_2px_8px)]"
+                      aria-hidden="true"
+                    />
+                    <div>
+                      <div class="text-sm font-extrabold">{nombre}</div>
+                      <div class="text-[12.5px] text-mute-700">{detalle}</div>
+                    </div>
+                  </div>
+                  <div class={celda}>{zona}</div>
+                  <div class:list={[celda, 'font-extrabold']}>{precio}</div>
+                  <div
+                    class:list={[
+                      'micro border-l border-line px-4 py-3.5',
+                      estado === 'Disponible' ? 'text-red' : 'text-mute-700',
+                    ]}>
+                    {estado}
+                  </div>
+                  <div class={celda}>{veces}</div>
+                </div>
+              ))
+            }
+          </div>
+          <p class="border-t-2 border-line px-5.5 py-4 text-[13px] text-mute-700">
+            Tu inventario como lo tengas hoy: Excel, hoja de Google, tu página o tu CRM. Nosotros lo
+            ordenamos el día 1 y el agente solo puede hablar de lo que está aquí.
           </p>
         </div>
       </div>
     </div>
+
+    <div class="mt-11 grid border-t-2 border-paper/30 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        capacidades.map(([t, d], i) => (
+          <div class:list={['px-6 pt-6', i > 0 && 'sm:border-l sm:border-paper/20']}>
+            <div class="display text-[21px]">{t}</div>
+            <p class="mt-2.5 text-sm leading-[1.6] text-paper/70">{d}</p>
+          </div>
+        ))
+      }
+    </div>
   </div>
 </section>
+
+<script>
+  const panel = document.querySelector<HTMLElement>('[data-panel]');
+  if (panel) {
+    const tabs = Array.from(panel.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+    const paneles = Array.from(panel.querySelectorAll<HTMLElement>('[data-tabpanel]'));
+
+    const activar = (id: string) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.classList.toggle('bg-ink', on);
+        t.classList.toggle('text-paper', on);
+        t.classList.toggle('bg-transparent', !on);
+        t.classList.toggle('text-mute-700', !on);
+        t.classList.toggle('hover:bg-surface', !on);
+      });
+      paneles.forEach((p) => {
+        p.hidden = p.dataset.tabpanel !== id;
+      });
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => activar(t.dataset.tab!));
+      t.addEventListener('keydown', (e) => {
+        const paso = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!paso) return;
+        e.preventDefault();
+        const siguiente = tabs[(i + paso + tabs.length) % tabs.length];
+        siguiente.focus();
+        activar(siguiente.dataset.tab!);
+      });
+    });
+  }
+</script>

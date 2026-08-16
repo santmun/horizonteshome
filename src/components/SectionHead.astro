@@ -1,0 +1,25 @@
+---
+/* Encabezado compartido: etiqueta + titular display + párrafo de apoyo.
+   `dark` lo invierte para las secciones sobre tinta. */
+interface Props {
+  kicker: string;
+  title: string;
+  lead: string;
+  dark?: boolean;
+  class?: string;
+}
+
+const { kicker, title, lead, dark = false, class: extra = '' } = Astro.props;
+---
+
+<div class:list={['grid items-end gap-14 md:grid-cols-2', extra]}>
+  <div>
+    <div class:list={['kicker', dark && 'text-red-500']}>{kicker}</div>
+    <h2 class:list={['display mt-4 text-[clamp(32px,4.2vw,58px)]', dark && 'text-paper']}>
+      {title}
+    </h2>
+  </div>
+  <p class:list={['mb-1.5 text-base leading-[1.68]', dark ? 'text-paper/70' : 'text-mute-700']}>
+    {lead}
+  </p>
+</div>

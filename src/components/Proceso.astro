@@ -1,18 +1,29 @@
 ---
+import { Image } from 'astro:assets';
+import SectionHead from './SectionHead.astro';
+import llamada from '../assets/paso-llamada.png';
+import inventario from '../assets/paso-inventario.png';
+import reglas from '../assets/paso-reglas.png';
+import visita from '../assets/paso-visita.png';
+
 const dias = [
   {
     etiqueta: 'Antes de empezar',
     titulo: 'Aplicas y platicamos 30 minutos',
     texto:
-      'Llenas la solicitud de abajo (unos 5 minutos). Si encajamos, te llamamos, entendemos cómo vende hoy tu equipo y te decimos con honestidad si esto te sirve o no.',
-    tuyo: 'Tu tiempo: 35 minutos',
+      'Llenas la solicitud de abajo. Si encajamos, te llamamos, entendemos cómo vende hoy tu equipo y te decimos con honestidad si esto te sirve o no.',
+    tuyo: 'Tu tiempo: 35 min',
+    img: llamada,
+    alt: 'Tarjeta de calendario con una llamada de diagnóstico agendada el sábado a las 11:00 am, de 30 minutos',
   },
   {
     etiqueta: 'Día 1',
     titulo: 'Nos pasas tu información',
     texto:
-      'Tu inventario de propiedades como lo tengas hoy (Excel, tu página, tu CRM), tus horarios, tus políticas de comisión y las preguntas que más te hacen. Nosotros lo ordenamos.',
+      'Tu inventario como lo tengas hoy, tus horarios, tus políticas de comisión y las preguntas que más te hacen. Nosotros lo ordenamos.',
     tuyo: 'Tu tiempo: 1 hora',
+    img: inventario,
+    alt: 'Un Excel desordenado de propiedades convertido en fichas limpias de Roble 214, Palma 87 y Av. Central 1120',
   },
   {
     etiqueta: 'Día 2',
@@ -20,6 +31,8 @@ const dias = [
     texto:
       'Armamos a tus agentes con tu información, tu tono y tus reglas. Aquí no haces nada: es nuestro trabajo pesado.',
     tuyo: 'Tu tiempo: cero',
+    img: reglas,
+    alt: 'Panel con las reglas del agente: tono cercano, nunca prometer descuentos, pasar a Miguel si piden negociar',
   },
   {
     etiqueta: 'Día 3',
@@ -27,47 +40,59 @@ const dias = [
     texto:
       'Tú y tus asesores le escriben como si fueran clientes, ajustamos lo que no les guste, conectamos tus canales y empieza a atender de verdad.',
     tuyo: 'Tu tiempo: 1 hora',
+    img: visita,
+    alt: 'Conversación de WhatsApp donde el agente agenda una visita el sábado a las 11 y avisa a Miguel',
   },
 ];
 ---
 
-<section id="proceso" class="border-y border-ink-100 bg-ink-950 text-white">
-  <div class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
-    <div class="max-w-2xl">
-      <p class="text-sm font-semibold uppercase tracking-wider text-brand-500">Cómo lo instalamos</p>
-      <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-        De la primera llamada a estar contestando: menos de tres días
-      </h2>
-      <p class="mt-5 text-lg leading-relaxed text-ink-300">
-        No es un proyecto de tres meses ni te vamos a pedir que cambies cómo trabajas. Nosotros lo
-        armamos todo; tú pones tu información y das el visto bueno.
-      </p>
-    </div>
+<section id="proceso" class="border-b-2 border-line bg-surface">
+  <div class="mx-auto max-w-[1360px] px-5 pt-20 sm:px-8">
+    <SectionHead
+      kicker="Cómo lo instalamos"
+      title="De la primera llamada a estar contestando: menos de tres días"
+      lead="No es un proyecto de tres meses ni te vamos a pedir que cambies cómo trabajas. Nosotros lo armamos todo; tú pones tu información y das el visto bueno."
+    />
 
-    <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+    <div data-reveal class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {
         dias.map((d) => (
-          <div class="reveal bg-ink-950 p-7">
-            <p class="text-sm font-semibold text-brand-500">{d.etiqueta}</p>
-            <h3 class="mt-3 text-lg font-semibold leading-snug">{d.titulo}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-ink-300">{d.texto}</p>
-            <p class="mt-5 inline-block rounded-lg bg-white/10 px-2.5 py-1 text-xs font-medium">
-              {d.tuyo}
-            </p>
-          </div>
+          <article class="group flex h-full flex-col rounded-3xl bg-paper p-3 transition duration-300 hover:-translate-y-2 hover:shadow-lift">
+            <Image
+              src={d.img}
+              alt={d.alt}
+              widths={[400, 700, 1000]}
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 50vw, 100vw"
+              loading="lazy"
+              class="aspect-4/3 w-full rounded-2xl bg-surface object-cover"
+            />
+            <div class="flex flex-1 flex-col px-4 pb-5 pt-6">
+              <div class="text-[11.5px] font-extrabold uppercase tracking-[.14em] text-red">
+                {d.etiqueta}
+              </div>
+              <h3 class="display mt-3 text-[25px] leading-[1.18]">{d.titulo}</h3>
+              <p class="mt-2.5 flex-1 text-[14.5px] leading-[1.62] text-mute-700">{d.texto}</p>
+              <div class="mt-5 inline-block self-start rounded-full bg-surface px-4 py-1.5 text-xs font-extrabold uppercase transition group-hover:bg-red group-hover:text-paper">
+                {d.tuyo}
+              </div>
+            </div>
+          </article>
         ))
       }
     </div>
+  </div>
 
-    <div class="mt-10 flex flex-col items-start gap-5 rounded-2xl border border-white/10 p-7 sm:flex-row sm:items-center sm:justify-between">
-      <p class="max-w-xl leading-relaxed text-ink-300">
-        <span class="font-semibold text-white">Después del día 3 no te dejamos solo.</span> Las
-        primeras semanas revisamos las conversaciones reales contigo y lo vamos afinando con lo que
-        de verdad pregunta tu mercado.
+  <div class="mt-16 border-t-2 border-line">
+    <div
+      class="mx-auto flex max-w-[1360px] flex-col items-start justify-between gap-6 px-5 py-8.5 sm:px-8 lg:flex-row lg:items-center">
+      <p class="m-0 max-w-[760px] text-base leading-[1.65] text-mute-700">
+        <strong class="text-ink">Después del día 3 no te dejamos solo.</strong> Las primeras semanas
+        revisamos las conversaciones reales contigo y lo vamos afinando con lo que de verdad pregunta
+        tu mercado.
       </p>
       <a
         href="#aplicar"
-        class="shrink-0 rounded-xl bg-white px-6 py-3.5 font-medium text-ink-950 transition hover:bg-brand-500 hover:text-white">
+        class="flex-none rounded-lg bg-ink px-7 py-4 text-[15px] font-extrabold text-paper transition-colors hover:bg-red">
         Aplicar ahora
       </a>
     </div>

@@ -3,30 +3,31 @@ const links = [
   { href: '#problema', label: 'El problema' },
   { href: '#que-hace', label: 'Qué hace' },
   { href: '#canales', label: 'Dónde trabaja' },
-  { href: '#proceso', label: 'Cómo lo instalamos' },
+  { href: '#panel', label: 'El panel' },
+  { href: '#proceso', label: 'Proceso' },
   { href: '#preguntas', label: 'Preguntas' },
 ];
 ---
 
-<header class="sticky top-0 z-40 border-b border-ink-100 bg-ink-50/85 backdrop-blur">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-3.5">
-    <a href="#top" class="flex shrink-0 items-center gap-2.5" aria-label="HorizontesHome, inicio">
-      <span class="grid size-9 place-items-center rounded-xl bg-brand-600 text-white">
-        <svg viewBox="0 0 24 24" class="size-5" fill="none" aria-hidden="true">
-          <path
-            d="M3 11.5 12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"
-            fill="currentColor"></path>
-        </svg>
-      </span>
-      <span class="text-[17px] font-semibold tracking-tight">
-        Horizontes<span class="text-brand-600">Home</span>
-      </span>
+<header class="sticky top-0 z-60 border-b-2 border-line bg-paper">
+  <div class="mx-auto flex max-w-[1360px] items-stretch justify-between gap-8 px-5 sm:px-8">
+    <a
+      href="#top"
+      class="flex shrink-0 items-center gap-2.5 py-4 text-[19px] font-extrabold tracking-[-.02em]"
+      aria-label="HorizontesHome, inicio">
+      <span class="block size-[22px] rounded-md bg-red"></span>
+      HORIZONTES<span class="text-red">HOME</span>
     </a>
 
-    <nav class="hidden items-center gap-7 lg:flex" aria-label="Secciones">
+    <nav class="hidden items-center text-[13px] font-semibold lg:flex" aria-label="Secciones">
       {
-        links.map((l) => (
-          <a href={l.href} class="text-sm text-ink-700 transition hover:text-brand-700">
+        links.map((l, i) => (
+          <a
+            href={l.href}
+            class:list={[
+              'border-l border-line px-[18px] transition-colors hover:text-red',
+              i === links.length - 1 && 'border-r',
+            ]}>
             {l.label}
           </a>
         ))
@@ -35,7 +36,7 @@ const links = [
 
     <a
       href="#aplicar"
-      class="shrink-0 rounded-xl bg-ink-950 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-brand-700"
+      class="my-auto shrink-0 rounded-lg bg-red px-[22px] py-3 text-sm font-extrabold text-paper transition-colors hover:bg-red-600"
       >Aplicar</a
     >
   </div>

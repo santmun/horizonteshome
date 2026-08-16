@@ -1,52 +1,72 @@
 ---
-const comparacion = [
-  {
-    chatbot: 'Responde preguntas sueltas y se queda esperando.',
-    agente: 'Lleva la conversación: pregunta lo que necesita saber para poder ayudarte.',
-  },
-  {
-    chatbot: 'Contesta con un menú de opciones que nadie quiere leer.',
-    agente: 'Escribe como escribe tu mejor asesor, con el tono de tu inmobiliaria.',
-  },
-  {
-    chatbot: 'Si no entiende, repite "no comprendí tu solicitud".',
-    agente: 'Si no sabe algo, lo dice y te pasa la conversación a ti al instante.',
-  },
-  {
-    chatbot: 'Te deja una bandeja de mensajes que igual tienes que leer completa.',
-    agente: 'Te entrega al cliente con presupuesto, zona y tipo de propiedad ya anotados.',
-  },
+const chatbot = [
+  'Responde preguntas sueltas y se queda esperando.',
+  'Contesta con un menú de opciones que nadie quiere leer.',
+  'Si no entiende, repite "no comprendí tu solicitud".',
+  'Te deja una bandeja que igual tienes que leer completa.',
+];
+
+const agentes = [
+  'Lleva la conversación: pregunta lo que necesita saber para poder ayudarte.',
+  'Escribe como escribe tu mejor asesor, con el tono de tu inmobiliaria.',
+  'Si no sabe algo, lo dice y te pasa la conversación a ti al instante.',
+  'Te entrega al cliente con presupuesto, zona y tipo de propiedad ya anotados.',
 ];
 ---
 
-<section class="mx-auto max-w-6xl px-5 py-20 lg:py-28">
-  <div class="mx-auto max-w-2xl text-center">
-    <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Qué instalamos</p>
-    <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-      Esto no es un chatbot. Es un equipo de venta que trabaja de noche.
-    </h2>
-    <p class="mt-5 text-lg leading-relaxed text-ink-700">
-      La diferencia no es técnica, es de trabajo. Un chatbot responde. Un asesor vende. Lo que
-      instalamos en tu inmobiliaria se parece mucho más a lo segundo.
-    </p>
-  </div>
-
-  <div class="mt-14 overflow-hidden rounded-2xl border border-ink-300/60 bg-white">
-    <div class="grid grid-cols-2 border-b border-ink-100 bg-ink-50">
-      <p class="px-6 py-4 text-sm font-semibold text-ink-500">Un chatbot cualquiera</p>
-      <p class="border-l border-ink-100 px-6 py-4 text-sm font-semibold text-brand-700">
-        Tu equipo de agentes
+<section class="relative overflow-hidden">
+  <div class="mx-auto max-w-[1360px] px-5 py-24 sm:px-8">
+    <div class="mx-auto max-w-[760px] text-center">
+      <div class="kicker">Qué instalamos</div>
+      <h2 class="display mt-4 text-[clamp(34px,4.6vw,64px)]">
+        Esto no es un chatbot.<br />
+        Es un equipo de venta que trabaja de noche.
+      </h2>
+      <p class="mx-auto mt-6 max-w-[560px] text-base leading-[1.68] text-mute-700">
+        La diferencia no es técnica, es de trabajo. Un chatbot responde. Un asesor vende.
       </p>
     </div>
-    {
-      comparacion.map((c, i) => (
-        <div class:list={['grid grid-cols-2', i > 0 && 'border-t border-ink-100']}>
-          <p class="px-6 py-5 text-sm leading-relaxed text-ink-500">{c.chatbot}</p>
-          <p class="border-l border-ink-100 px-6 py-5 text-sm leading-relaxed text-ink-900">
-            {c.agente}
-          </p>
+
+    <div data-reveal class="mt-16 grid items-center gap-8 lg:grid-cols-[.82fr_1.18fr] lg:gap-6">
+      <!-- El que pierde -->
+      <div class="-rotate-[1.4deg] rounded-3xl border border-line bg-surface p-8 sm:p-9">
+        <div class="micro text-mute-500">Un chatbot cualquiera</div>
+        <ul class="mt-6 grid gap-4">
+          {
+            chatbot.map((t) => (
+              <li class="flex gap-3 text-[15px] leading-[1.55] text-mute-500">
+                <span class="mt-0.5 grid size-5 flex-none place-items-center rounded-full border border-mute-400 text-[11px] font-extrabold">
+                  ×
+                </span>
+                {t}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- El que gana -->
+      <div class="relative rounded-3xl bg-ink p-8 text-paper shadow-lift sm:p-11">
+        <div
+          class="pointer-events-none absolute -right-16 -top-16 size-52 rounded-full bg-red/25 blur-2xl"
+          aria-hidden="true">
         </div>
-      ))
-    }
+        <div class="relative">
+          <div class="micro text-red-500">Tu equipo de agentes</div>
+          <ul class="mt-6 grid gap-5">
+            {
+              agentes.map((t) => (
+                <li class="flex gap-3.5 text-[16px] leading-[1.55]">
+                  <span class="mt-0.5 grid size-5 flex-none place-items-center rounded-full bg-red text-[11px] font-extrabold text-paper">
+                    ✓
+                  </span>
+                  {t}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
 </section>

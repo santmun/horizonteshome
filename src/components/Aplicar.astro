@@ -1,9 +1,11 @@
 ---
 // Definición del wizard. Cada paso agrupa campos; el orden aquí es el orden en pantalla
 // y también el orden del correo que llega a contacto@.
+// `grupo` mapea el paso a las tres pestañas del encabezado del rediseño.
 const pasos = [
   {
     id: 'negocio',
+    grupo: 0,
     titulo: 'Tu inmobiliaria',
     ayuda: 'Lo básico para saber con quién estamos hablando.',
     campos: [
@@ -18,6 +20,7 @@ const pasos = [
   },
   {
     id: 'operacion',
+    grupo: 0,
     titulo: 'Cómo es tu operación',
     ayuda: 'Esto define el tamaño del sistema que necesitas.',
     campos: [
@@ -41,6 +44,7 @@ const pasos = [
   },
   {
     id: 'atencion',
+    grupo: 1,
     titulo: 'Cómo atienden hoy',
     ayuda: 'La parte que más nos dice si te podemos ayudar.',
     campos: [
@@ -68,6 +72,7 @@ const pasos = [
   },
   {
     id: 'herramientas',
+    grupo: 1,
     titulo: 'Con qué trabajan',
     ayuda: 'Para conectar el sistema con lo que ya usas, no cambiarte de todo.',
     campos: [
@@ -84,6 +89,7 @@ const pasos = [
   },
   {
     id: 'objetivo',
+    grupo: 1,
     titulo: 'Qué quieres resolver',
     ayuda: 'Sé lo más concreto que puedas: esto es lo que leemos primero.',
     campos: [
@@ -113,6 +119,7 @@ const pasos = [
   },
   {
     id: 'contacto',
+    grupo: 2,
     titulo: 'Cómo te contactamos',
     ayuda: 'Último paso. Revisamos las solicitudes y respondemos en 24 horas hábiles.',
     campos: [
@@ -123,210 +130,233 @@ const pasos = [
     ],
   },
 ];
+
+const grupos = ['01 · Tu inmobiliaria', '02 · Cómo vendes', '03 · Contacto'];
+
+const input =
+  'mt-2.5 w-full rounded-lg border border-line bg-white px-3.5 py-3.5 text-[15px] outline-none transition-colors placeholder:text-mute-400 focus:border-red';
+const etiqueta = 'block text-xs font-extrabold uppercase tracking-[.1em] text-mute-700';
 ---
 
-<section id="aplicar" class="mx-auto max-w-3xl scroll-mt-24 px-5 py-20 lg:py-28">
-  <div class="mb-10 text-center">
-    <p class="text-sm font-semibold uppercase tracking-wider text-brand-600">Solicitud</p>
-    <h2 class="mt-3 text-balance text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">
-      Cuéntanos de tu inmobiliaria
-    </h2>
-    <p class="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-ink-700">
-      Son 5 minutos. Con esto llegamos a la llamada sabiendo de qué hablar y te podemos dar un
-      número real, no un rango inventado.
-    </p>
+<section id="aplicar" class="relative overflow-hidden border-b-2 border-line bg-ink text-paper">
+  <div
+    class="absolute inset-0 bg-[#2b2928] [background-image:repeating-linear-gradient(58deg,rgba(255,255,255,.07)_0_3px,transparent_3px_18px)] [filter:grayscale(1)]"
+    aria-hidden="true">
+  </div>
+  <div
+    class="absolute -bottom-56 -left-44 size-[520px] rounded-full border-2 border-paper/20"
+    aria-hidden="true">
   </div>
 
-  <div class="overflow-hidden rounded-3xl border border-ink-300/60 bg-white shadow-xl shadow-ink-950/5">
-    <!-- Progreso -->
-    <div class="border-b border-ink-100 px-6 py-5 sm:px-9" data-progreso>
-      <div class="flex items-baseline justify-between gap-4">
-        <p class="text-sm font-medium">
-          Paso <span data-paso-actual>1</span> de {pasos.length + 1}
-        </p>
-        <p class="text-sm text-ink-500" data-paso-titulo>{pasos[0].titulo}</p>
-      </div>
-      <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-ink-100">
-        <div
-          class="h-full rounded-full bg-brand-600 transition-all duration-300"
-          style={`width:${100 / pasos.length}%`}
-          data-barra>
-        </div>
-      </div>
-    </div>
-
-    <form id="form-aplicar" novalidate>
-      <!-- trampa para bots -->
-      <div class="absolute left-[-9999px]" aria-hidden="true">
-        <label>No llenar<input type="text" name="empresa_web" tabindex="-1" autocomplete="off" /></label>
-      </div>
-
-      {
-        pasos.map((paso, i) => (
-          <fieldset class:list={['px-6 py-8 sm:px-9', i > 0 && 'hidden']} data-paso={i}>
-            <legend class="sr-only">{paso.titulo}</legend>
-            <p class="text-xl font-semibold">{paso.titulo}</p>
-            <p class="mt-1.5 text-sm text-ink-500">{paso.ayuda}</p>
-
-            <div class="mt-8 space-y-7">
-              {paso.campos.map((campo) => (
-                <div data-campo={campo.name}>
-                  <label
-                    class="block text-[15px] font-medium leading-snug"
-                    for={['text', 'email', 'tel', 'textarea'].includes(campo.type) ? `f-${campo.name}` : undefined}>
-                    {campo.label}
-                    {!campo.required && <span class="ml-1.5 text-xs font-normal text-ink-500">(opcional)</span>}
-                  </label>
-                  {campo.nota && <p class="mt-1 text-[13px] leading-relaxed text-ink-500">{campo.nota}</p>}
-
-                  {['text', 'email', 'tel'].includes(campo.type) && (
-                    <input
-                      id={`f-${campo.name}`}
-                      type={campo.type}
-                      name={campo.name}
-                      placeholder={campo.placeholder}
-                      required={campo.required}
-                      autocomplete={campo.type === 'email' ? 'email' : campo.type === 'tel' ? 'tel' : 'off'}
-                      class="mt-2.5 w-full rounded-xl border border-ink-300 bg-white px-4 py-3 text-[15px] outline-none transition placeholder:text-ink-300 focus:border-brand-600 focus:ring-4 focus:ring-brand-100"
-                    />
-                  )}
-
-                  {campo.type === 'textarea' && (
-                    <textarea
-                      id={`f-${campo.name}`}
-                      name={campo.name}
-                      rows="3"
-                      placeholder={campo.placeholder}
-                      required={campo.required}
-                      class="mt-2.5 w-full resize-y rounded-xl border border-ink-300 bg-white px-4 py-3 text-[15px] outline-none transition placeholder:text-ink-300 focus:border-brand-600 focus:ring-4 focus:ring-brand-100"
-                    />
-                  )}
-
-                  {(campo.type === 'radio' || campo.type === 'checkbox') && (
-                    <div class="mt-3 flex flex-wrap gap-2.5" role="group" aria-label={campo.label}>
-                      {campo.opciones?.map((op, oi) => (
-                        <label class="cursor-pointer">
-                          <input
-                            type={campo.type}
-                            name={campo.name}
-                            value={op}
-                            id={`f-${campo.name}-${oi}`}
-                            data-required={campo.required ? 'si' : undefined}
-                            class="peer sr-only"
-                          />
-                          <span class="inline-block rounded-xl border border-ink-300 bg-white px-4 py-2.5 text-[14.5px] transition hover:border-ink-500 peer-checked:border-brand-600 peer-checked:bg-brand-600 peer-checked:text-white peer-focus-visible:ring-4 peer-focus-visible:ring-brand-100">
-                            {op}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-
-                  <p class="mt-2 hidden text-[13px] font-medium text-red-600" data-error>
-                    Nos falta este dato.
-                  </p>
-                </div>
-              ))}
-            </div>
-          </fieldset>
-        ))
-      }
-
-      <!-- Resumen -->
-      <fieldset class="hidden px-6 py-8 sm:px-9" data-paso={pasos.length}>
-        <legend class="sr-only">Revisa tu solicitud</legend>
-        <p class="text-xl font-semibold">Revisa antes de enviar</p>
-        <p class="mt-1.5 text-sm text-ink-500">
-          Si algo no quedó bien, regresa y cámbialo. Nadie ve esto más que nosotros.
-        </p>
-        <dl class="mt-7 divide-y divide-ink-100 rounded-2xl border border-ink-100 bg-ink-50" data-resumen></dl>
-
-        <label class="mt-7 flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-ink-700">
-          <input
-            type="checkbox"
-            name="acepto"
-            required
-            class="mt-0.5 size-4 shrink-0 rounded border-ink-300 accent-[var(--color-brand-600)]"
-          />
-          <span>
-            Acepto que HorizontesHome me contacte por correo o WhatsApp sobre esta solicitud. No
-            compartimos tus datos con nadie más.
-          </span>
-        </label>
-        <p class="mt-2 hidden text-[13px] font-medium text-red-600" data-error-acepto>
-          Necesitamos tu permiso para poder contactarte.
-        </p>
-      </fieldset>
-
-      <!-- Navegación -->
-      <div class="flex items-center justify-between gap-4 border-t border-ink-100 bg-ink-50 px-6 py-5 sm:px-9">
-        <button
-          type="button"
-          data-atras
-          class="rounded-xl px-4 py-2.5 text-sm font-medium text-ink-500 transition hover:text-ink-900 disabled:invisible">
-          ← Atrás
-        </button>
-        <button
-          type="button"
-          data-siguiente
-          class="rounded-xl bg-brand-600 px-6 py-3 font-medium text-white transition hover:bg-brand-700">
-          Siguiente
-        </button>
-        <button
-          type="submit"
-          data-enviar
-          class="hidden rounded-xl bg-brand-600 px-6 py-3 font-medium text-white transition hover:bg-brand-700 disabled:opacity-60">
-          Enviar solicitud
-        </button>
-      </div>
-    </form>
-
-    <!-- Éxito -->
-    <div class="hidden px-6 py-16 text-center sm:px-9" data-exito>
-      <span class="mx-auto grid size-14 place-items-center rounded-2xl bg-accent-100 text-accent-600">
-        <svg viewBox="0 0 20 20" class="size-7" fill="currentColor" aria-hidden="true">
-          <path d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z" />
-        </svg>
-      </span>
-      <h3 class="mt-6 text-2xl font-semibold">Recibimos tu solicitud</h3>
-      <p class="mx-auto mt-4 max-w-md leading-relaxed text-ink-700">
-        La revisamos con calma y te escribimos en menos de 24 horas hábiles. Si encajamos, en ese
-        mismo correo te mandamos el link para agendar la llamada de 30 minutos.
+  <div class="relative mx-auto grid max-w-[1360px] items-start gap-16 px-5 py-20 pb-22 sm:px-8 lg:grid-cols-[minmax(320px,1fr)_minmax(0,1.25fr)]">
+    <div>
+      <div class="kicker text-red-500">La solicitud</div>
+      <h2 class="display mt-4 text-[clamp(32px,4vw,56px)] text-paper">Cuéntanos de tu inmobiliaria</h2>
+      <p class="mt-5 max-w-[420px] text-base leading-[1.68] text-paper/70">
+        Cinco minutos. Si encajamos, te llamamos y te decimos con honestidad si esto te sirve. Si no,
+        también te lo decimos.
       </p>
+      <ul class="mt-8 border-t border-paper/25">
+        {
+          [
+            'Trabajamos con pocas inmobiliarias a la vez',
+            'Respondemos en menos de 24 horas hábiles',
+            'Sin compromiso y sin llamada de ventas eterna',
+          ].map((t, i) => (
+            <li class:list={['py-3.5 text-sm text-paper/70', i < 2 && 'border-b border-paper/25']}>{t}</li>
+          ))
+        }
+      </ul>
     </div>
 
-    <!-- Error de envío -->
-    <div class="hidden border-t border-red-200 bg-red-50 px-6 py-5 text-sm leading-relaxed text-red-700 sm:px-9" data-fallo>
-      No pudimos enviar tu solicitud. Escríbenos directo a
-      <a href="mailto:contacto@innovandohorizontes.com" class="font-semibold underline">contacto@innovandohorizontes.com</a>
-      y lo resolvemos.
+    <div class="overflow-hidden rounded-xl border-2 border-paper/30 bg-paper text-ink">
+      <!-- Encabezado de grupos -->
+      <div class="flex border-b-2 border-line" data-grupos>
+        {
+          grupos.map((g, i) => (
+            <div
+              data-grupo={i}
+              class:list={[
+                'micro flex-1 px-3 py-3.5 sm:px-4.5',
+                i > 0 && 'border-l border-line',
+                i === 0 ? 'bg-ink text-paper' : 'text-mute-700',
+              ]}>
+              {g}
+            </div>
+          ))
+        }
+      </div>
+
+      <form id="form-aplicar" novalidate>
+        <!-- trampa para bots -->
+        <div class="absolute left-[-9999px]" aria-hidden="true">
+          <label>No llenar<input type="text" name="empresa_web" tabindex="-1" autocomplete="off" /></label>
+        </div>
+
+        {
+          pasos.map((paso, i) => (
+            <fieldset class:list={['px-6 py-7 sm:px-7', i > 0 && 'hidden']} data-paso={i}>
+              <legend class="sr-only">{paso.titulo}</legend>
+              <p class="display text-[26px] leading-tight">{paso.titulo}</p>
+              <p class="mt-1.5 text-sm text-mute-700">{paso.ayuda}</p>
+
+              <div class="mt-7 grid gap-6">
+                {paso.campos.map((campo) => (
+                  <div data-campo={campo.name}>
+                    <label
+                      class={etiqueta}
+                      for={['text', 'email', 'tel', 'textarea'].includes(campo.type) ? `f-${campo.name}` : undefined}>
+                      {campo.label}
+                      {!campo.required && <span class="ml-1.5 font-semibold normal-case tracking-normal text-mute-500">(opcional)</span>}
+                    </label>
+                    {campo.nota && <p class="mt-1.5 text-[13px] leading-relaxed text-mute-500">{campo.nota}</p>}
+
+                    {['text', 'email', 'tel'].includes(campo.type) && (
+                      <input
+                        id={`f-${campo.name}`}
+                        type={campo.type}
+                        name={campo.name}
+                        placeholder={campo.placeholder}
+                        required={campo.required}
+                        autocomplete={campo.type === 'email' ? 'email' : campo.type === 'tel' ? 'tel' : 'off'}
+                        class={input}
+                      />
+                    )}
+
+                    {campo.type === 'textarea' && (
+                      <textarea
+                        id={`f-${campo.name}`}
+                        name={campo.name}
+                        rows="3"
+                        placeholder={campo.placeholder}
+                        required={campo.required}
+                        class:list={[input, 'resize-y']}
+                      />
+                    )}
+
+                    {(campo.type === 'radio' || campo.type === 'checkbox') && (
+                      <div class="mt-3 flex flex-wrap gap-2" role="group" aria-label={campo.label}>
+                        {campo.opciones?.map((op, oi) => (
+                          <label class="cursor-pointer">
+                            <input
+                              type={campo.type}
+                              name={campo.name}
+                              value={op}
+                              id={`f-${campo.name}-${oi}`}
+                              data-required={campo.required ? 'si' : undefined}
+                              class="peer sr-only"
+                            />
+                            <span class="inline-block rounded-lg border border-line bg-white px-3.5 py-2.5 text-[13.5px] transition-colors hover:border-ink peer-checked:border-ink peer-checked:bg-ink peer-checked:font-semibold peer-checked:text-paper peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-red">
+                              {op}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    )}
+
+                    <p class="mt-2 hidden text-[13px] font-extrabold text-red" data-error>
+                      Nos falta este dato.
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </fieldset>
+          ))
+        }
+
+        <!-- Resumen -->
+        <fieldset class="hidden px-6 py-7 sm:px-7" data-paso={pasos.length}>
+          <legend class="sr-only">Revisa tu solicitud</legend>
+          <p class="display text-[26px] leading-tight">Revisa antes de enviar</p>
+          <p class="mt-1.5 text-sm text-mute-700">
+            Si algo no quedó bien, regresa y cámbialo. Nadie ve esto más que nosotros.
+          </p>
+          <dl class="mt-6 border-t border-line" data-resumen></dl>
+
+          <label class="mt-6 flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-mute-700">
+            <input
+              type="checkbox"
+              name="acepto"
+              required
+              class="mt-0.5 size-4 shrink-0 accent-[var(--color-red)]"
+            />
+            <span>
+              Acepto que HorizontesHome me contacte por correo o WhatsApp sobre esta solicitud. No
+              compartimos tus datos con nadie más.
+            </span>
+          </label>
+          <p class="mt-2 hidden text-[13px] font-extrabold text-red" data-error-acepto>
+            Necesitamos tu permiso para poder contactarte.
+          </p>
+        </fieldset>
+
+        <!-- Navegación -->
+        <div class="flex flex-wrap items-center justify-between gap-4 border-t-2 border-line px-6 py-4.5 sm:px-7">
+          <button
+            type="button"
+            data-atras
+            class="cursor-pointer rounded-lg border border-line px-5.5 py-3 text-sm font-extrabold transition-colors hover:bg-surface disabled:invisible">
+            Atrás
+          </button>
+          <div class="order-last w-full text-center text-[12.5px] text-mute-700 sm:order-none sm:w-auto">
+            Paso <span data-paso-actual>1</span> de {pasos.length + 1}
+          </div>
+          <button
+            type="button"
+            data-siguiente
+            class="cursor-pointer rounded-lg bg-red px-6.5 py-3.25 text-sm font-extrabold text-paper transition-colors hover:bg-red-600">
+            Siguiente
+          </button>
+          <button
+            type="submit"
+            data-enviar
+            class="hidden cursor-pointer rounded-lg bg-red px-6.5 py-3.25 text-sm font-extrabold text-paper transition-colors hover:bg-red-600 disabled:opacity-60">
+            Enviar solicitud
+          </button>
+        </div>
+      </form>
+
+      <!-- Éxito -->
+      <div class="hidden px-6 py-16 text-center sm:px-7" data-exito>
+        <span class="mx-auto grid size-14 place-items-center rounded-xl bg-red text-paper">
+          <svg viewBox="0 0 20 20" class="size-7" fill="currentColor" aria-hidden="true">
+            <path d="M16.7 5.3a1 1 0 0 1 0 1.4l-7.5 7.5a1 1 0 0 1-1.4 0L3.3 9.7a1 1 0 1 1 1.4-1.4l3.8 3.8 6.8-6.8a1 1 0 0 1 1.4 0z"></path>
+          </svg>
+        </span>
+        <h3 class="display mt-6 text-[30px]">Recibimos tu solicitud</h3>
+        <p class="mx-auto mt-4 max-w-md leading-relaxed text-mute-700">
+          La revisamos con calma y te escribimos en menos de 24 horas hábiles. Si encajamos, en ese
+          mismo correo te mandamos el link para agendar la llamada de 30 minutos.
+        </p>
+      </div>
+
+      <!-- Error de envío -->
+      <div class="hidden border-t-2 border-line bg-red-200 px-6 py-4.5 text-sm leading-relaxed text-red-800 sm:px-7" data-fallo>
+        No pudimos enviar tu solicitud. Escríbenos directo a
+        <a href="mailto:contacto@innovandohorizontes.com" class="font-extrabold underline">contacto@innovandohorizontes.com</a>
+        y lo resolvemos.
+      </div>
     </div>
   </div>
-
-  <p class="mt-6 text-center text-sm text-ink-500">
-    ¿Prefieres escribirnos primero?
-    <a href="mailto:contacto@innovandohorizontes.com" class="font-medium text-brand-700 underline">
-      contacto@innovandohorizontes.com
-    </a>
-  </p>
 </section>
 
 <script>
   const form = document.getElementById('form-aplicar') as HTMLFormElement | null;
   if (form) {
-    const root = form.closest('div')!;
+    const tarjeta = form.parentElement!;
     const fieldsets = Array.from(form.querySelectorAll<HTMLFieldSetElement>('[data-paso]'));
     const total = fieldsets.length;
+    // Qué grupo del encabezado ilumina cada paso (el resumen cae en el último)
+    const GRUPO_POR_PASO = [0, 0, 1, 1, 1, 2, 2];
     const btnAtras = form.querySelector<HTMLButtonElement>('[data-atras]')!;
     const btnSig = form.querySelector<HTMLButtonElement>('[data-siguiente]')!;
     const btnEnviar = form.querySelector<HTMLButtonElement>('[data-enviar]')!;
-    const barra = root.querySelector<HTMLElement>('[data-barra]')!;
-    const numPaso = root.querySelector<HTMLElement>('[data-paso-actual]')!;
-    const tituloPaso = root.querySelector<HTMLElement>('[data-paso-titulo]')!;
+    const numPaso = form.querySelector<HTMLElement>('[data-paso-actual]')!;
     const resumen = form.querySelector<HTMLElement>('[data-resumen]')!;
-    const exito = root.querySelector<HTMLElement>('[data-exito]')!;
-    const fallo = root.querySelector<HTMLElement>('[data-fallo]')!;
-    const progreso = root.querySelector<HTMLElement>('[data-progreso]')!;
+    const exito = tarjeta.querySelector<HTMLElement>('[data-exito]')!;
+    const fallo = tarjeta.querySelector<HTMLElement>('[data-fallo]')!;
+    const cabecera = tarjeta.querySelector<HTMLElement>('[data-grupos]')!;
+    const gruposEl = Array.from(cabecera.querySelectorAll<HTMLElement>('[data-grupo]'));
     const CLAVE = 'hh-aplicacion';
 
     let actual = 0;
@@ -390,11 +420,11 @@ const pasos = [
         if (!valido) {
           ok = false;
           err?.classList.remove('hidden');
-          texto?.classList.add('border-red-400');
+          texto?.classList.add('border-red');
           primerFallo ||= grupo;
         } else {
           err?.classList.add('hidden');
-          texto?.classList.remove('border-red-400');
+          texto?.classList.remove('border-red');
         }
       });
 
@@ -418,12 +448,12 @@ const pasos = [
       resumen.innerHTML = '';
       for (const [k, v] of datos) {
         const fila = document.createElement('div');
-        fila.className = 'grid gap-1 px-5 py-3.5 sm:grid-cols-[1fr_1.1fr] sm:gap-4';
+        fila.className = 'grid gap-1 border-b border-line py-3 sm:grid-cols-[1fr_1.1fr] sm:gap-4';
         const dt = document.createElement('dt');
-        dt.className = 'text-[13px] text-ink-500';
+        dt.className = 'text-[13px] text-mute-700';
         dt.textContent = titulos[k] || k;
         const dd = document.createElement('dd');
-        dd.className = 'text-[14.5px] font-medium';
+        dd.className = 'text-[14.5px] font-semibold';
         dd.textContent = v.join(' · ');
         fila.append(dt, dd);
         resumen.append(fila);
@@ -438,13 +468,18 @@ const pasos = [
       btnSig.classList.toggle('hidden', esUltimo);
       btnEnviar.classList.toggle('hidden', !esUltimo);
       btnAtras.disabled = i === 0;
-      barra.style.width = `${((i + 1) / total) * 100}%`;
       numPaso.textContent = String(i + 1);
-      tituloPaso.textContent = esUltimo
-        ? 'Revisa y envía'
-        : fieldsets[i].querySelector('p')?.textContent || '';
+
+      const activo = GRUPO_POR_PASO[i] ?? gruposEl.length - 1;
+      gruposEl.forEach((g, gi) => {
+        const on = gi === activo;
+        g.classList.toggle('bg-ink', on);
+        g.classList.toggle('text-paper', on);
+        g.classList.toggle('text-mute-700', !on);
+      });
+
       if (esUltimo) pintarResumen();
-      progreso.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      cabecera.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     btnSig.addEventListener('click', () => {
@@ -491,7 +526,7 @@ const pasos = [
         });
         if (!res.ok) throw new Error(String(res.status));
         form.classList.add('hidden');
-        progreso.classList.add('hidden');
+        cabecera.classList.add('hidden');
         exito.classList.remove('hidden');
         exito.scrollIntoView({ behavior: 'smooth', block: 'center' });
         try {
